@@ -12,6 +12,7 @@
 #include <sstream>
 #include <fstream>
 #include "Parser.h"
+
 using namespace::std;
 
 
@@ -48,6 +49,7 @@ int doParse(char* FILENAME, vector<block>* Blocks, Net** Nets, int* numberOfNets
         if (line == "-1" && reading == BLOCK_NET_NUM){
             //switch reading to FIXED_POINT
             reading = FIXED_POINT;
+            continue;
         }
         else if (line == "-1" && reading == FIXED_POINT){
             quit = true;
@@ -57,6 +59,7 @@ int doParse(char* FILENAME, vector<block>* Blocks, Net** Nets, int* numberOfNets
         stringstream ss1(line);
         int blocknum;
         int net_num;
+        
         if (reading == BLOCK_NET_NUM){
             //extract the blocknum
             ss1>>blocknum;
@@ -83,15 +86,17 @@ int doParse(char* FILENAME, vector<block>* Blocks, Net** Nets, int* numberOfNets
         
         
         
-        if (reading == FIXED_POINT){
+        else if (reading == FIXED_POINT){
             //extract the blocknum
             int blocknum;
             ss1>>blocknum;
             int x, y;
             //extract the x, y points
             ss1>>x>>y;
-            (*Blocks)[blocknum-1].setx(x);
-            (*Blocks)[blocknum-1].sety(y);
+//            (*Blocks)[blocknum-1].setx(x);
+//            (*Blocks)[blocknum-1].sety(y);
+            Blocks->at(blocknum-1).setx(x);
+            Blocks->at(blocknum-1).sety(y);
         }
     
     }
@@ -104,9 +109,9 @@ int doParse(char* FILENAME, vector<block>* Blocks, Net** Nets, int* numberOfNets
         vector<int>* NetNumTemp = (*Blocks)[h].getNetNum();
         for (int g = 0; g < NetNumTemp->size(); g++){
             (*Nets)[(*NetNumTemp)[g]-1].incrementNumPins();
+            (*Nets)[(*NetNumTemp)[g]-1].getBlockNums()->push_back((*Blocks)[h].getBlockNum());
         }
     }
-    
     
     return 0;
 }
