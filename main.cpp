@@ -35,9 +35,9 @@ int main(int argc, const char * argv[]) {
     cout<<"Done";
     
     //UMFPACK STUFF
-    int* x = NULL;
+    double* x = NULL;
     int dim = 5;
-    int b[] = {0, 0, 0, 0, 0};
+    double b[] = {0, 0, 0, 0, 0};
     int** A = NULL;
     A = new int* [5];
     for (int i =0; i < 5; i++){
