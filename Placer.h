@@ -19,6 +19,7 @@ private:
     vector<int> netnum;
     int x, y;
     bool fixed;
+    int totalWeight=0;
 public:
     void setBlockNum(int _blockNum){
         blockNum = _blockNum;
@@ -55,6 +56,13 @@ public:
     void setFixed(bool _fixed){
         fixed = _fixed;
     }
+    void AddTotalWeight(int weight){
+        totalWeight = totalWeight + weight;
+    }
+    
+    int getTotalWeight(){ 
+        return totalWeight;
+    }
 };
 
 class Net{
@@ -85,6 +93,11 @@ public:
         return &BlockNums;
     }
     
+};
+
+struct WeightandPin{
+    int blocknum;
+    int weight;
 };
 
 #endif	/* PLACER_H */
