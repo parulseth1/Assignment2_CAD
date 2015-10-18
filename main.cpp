@@ -12,6 +12,7 @@
 #include "Parser.h"
 #include "UMFWrapper.h"
 #include "Placer.h"
+#include "APlacer.h"
 #define FILENAME "/home/eski/Parul/Assignment2/cct1.txt"
 using namespace::std;
 
@@ -33,6 +34,30 @@ int main(int argc, const char * argv[]) {
     }
     
     cout<<"Done";
+    
+    
+    
+    ///Parul's work starts here
+    
+    vector<vector<int> > AllWeights; /// gave some error here when i had not put space between the
+                                      // >> therefore had to put space. please check
+    
+    
+    // setting total weights for all the blocks.// this is an initial step.// after this
+    // we would just add the weights of the dummy nets we create in order to spread.
+    for(int a = 0; a< Blocks.size(); a++){   /// check if dot or arrow
+        setTotalWeight(Blocks[a],&Nets); 
+    }
+    // now to to make the matrix.
+    int numOfBlocks = Blocks.size();
+    for (int a =0; a<numOfBlocks;a++){
+        vector<int> Weights = getCorrespondingWeights(Blocks[a], &Nets, a, numOfBlocks);
+        AllWeights.push_back(Weights);
+    }
+    
+    
+    /// parul's work ends here
+    
     
     //UMFPACK STUFF
     int* x = NULL;
