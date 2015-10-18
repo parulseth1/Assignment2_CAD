@@ -55,26 +55,26 @@ int doSolve(int** A, int dim, double** x, double* b){
     int* Ap = new int[dim + 1];
     int* Ai = new int[nz];
     double* Ax = new double[nz];
-//    int status = umfpack_di_triplet_to_col(dim, dim, nz, Ti, Tj, Tx,
-//                    Ap, Ai, Ax, NULL);
+    int status = umfpack_di_triplet_to_col(dim, dim, nz, Ti, Tj, Tx,
+                    Ap, Ai, Ax, NULL);
     
     
 
-//    if (status != UMFPACK_OK) {
-//        cout<<"Error"<<endl;
-//        exit(1);
-//    }
+    if (status != UMFPACK_OK) {
+        cout<<"Error"<<endl;
+        exit(1);
+    }
     
-    double *null = (double *) NULL;
-    int i;
-    void *Symbolic, *Numeric;
-
-    (void) umfpack_di_symbolic(dim, dim, Ap, Ai, Ax, &Symbolic, null, null);
-    (void) umfpack_di_numeric(Ap, Ai, Ax, Symbolic, &Numeric, null, null);
-    umfpack_di_free_symbolic(&Symbolic);
-    (void) umfpack_di_solve(UMFPACK_A, Ap, Ai, Ax, *x, b, Numeric, null, null);
-    umfpack_di_free_numeric(&Numeric);
-    for (i = 0; i < dim; i++) printf("x [%d] = %g\n", i, *x [i]);
+//    double *null = (double *) NULL;
+//    int i;
+//    void *Symbolic, *Numeric;
+//
+//    (void) umfpack_di_symbolic(dim, dim, Ap, Ai, Ax, &Symbolic, null, null);
+//    (void) umfpack_di_numeric(Ap, Ai, Ax, Symbolic, &Numeric, null, null);
+//    umfpack_di_free_symbolic(&Symbolic);
+//    (void) umfpack_di_solve(UMFPACK_A, Ap, Ai, Ax, *x, b, Numeric, null, null);
+//    umfpack_di_free_numeric(&Numeric);
+//    for (i = 0; i < dim; i++) printf("x [%d] = %g\n", i, *x [i]);
     
     
     delete[] Ti;
