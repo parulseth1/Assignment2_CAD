@@ -30,14 +30,12 @@ public:
         return &netnum;
     }
     void setx(int _x){
-        fixed = true;
         x = _x;
     }
     int getx(){
         return x;
     }
     void sety(int _y){
-        fixed = true;
         y = _y;
     }
     int gety(){
@@ -52,6 +50,10 @@ public:
     
     bool getFixed(){
         return fixed;
+    }
+    
+    void setFixed(bool _fixed){
+        fixed = _fixed;
     }
 };
 

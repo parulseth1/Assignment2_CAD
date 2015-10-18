@@ -8,7 +8,9 @@
 
 #include "UMFWrapper.h"
 #include <iostream>
+extern "C" {
 #include "SuiteSparse/UMFPACK/Include/umfpack.h"
+}
 
 using namespace::std;
 

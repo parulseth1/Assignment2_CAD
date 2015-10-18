@@ -97,6 +97,7 @@ int doParse(char* FILENAME, vector<block>* Blocks, Net** Nets, int* numberOfNets
 //            (*Blocks)[blocknum-1].sety(y);
             Blocks->at(blocknum-1).setx(x);
             Blocks->at(blocknum-1).sety(y);
+            Blocks->at(blocknum-1).setFixed(true);
         }
     
     }
