@@ -37,6 +37,8 @@ int main(int argc, const char * argv[]) {
     
     
     
+    
+    
     ///Parul's work starts here
     
     vector<vector<int> > AllWeights; /// gave some error here when i had not put space between the
@@ -62,6 +64,16 @@ int main(int argc, const char * argv[]) {
     ForYGetRightMatrix(AllWeights, Blocks, &RightMatrix_Y, numOfBlocks);
     
     /// parul's work ends here
+    
+    
+    // put this after the umfpack stuff
+    // from here.
+    int NumOfNet; // get this from parser because we wont need any other value for this
+                        // jus the initial value.
+    int HPWL = CalculateHPWL(&Nets, Blocks, NumOfNet);
+    
+    //to here
+    
     
     
     //UMFPACK STUFF

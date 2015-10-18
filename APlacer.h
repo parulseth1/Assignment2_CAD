@@ -17,6 +17,6 @@ vector<int> getCorrespondingWeights(block, Net**, int,int);
 void GetLeftMatrix(vector<vector<int> >, vector<block>,vector<vector<int> >*,int);
 void ForXGetRightMatrix(vector<vector<int> > , vector<block>, vector<int>* , int);
 void ForYGetRightMatrix(vector<vector<int> > , vector<block>, vector<int>* , int);
-
+int CalculateHPWL(Net**, vector<block>, int);
 #endif	/* APLACER_H */
 

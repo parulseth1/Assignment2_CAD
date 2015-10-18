@@ -125,8 +125,42 @@ void ForYGetRightMatrix(vector<vector<int> > weights, vector<block> Blocks, vect
     }
      
 }
+  
+    
 
-
+int CalculateHPWL(Net** net, vector<block> Blocks, int NumOfNets){
+    int hpwl =0;
+    for (int a = 0; a < NumOfNets;a++){
+        vector<int>* blocknums = (*net)[a].getBlockNums();
+        int xMax = 0;
+        int yMax = 0;
+        int xMin = 100;
+        int yMin = 100;
+        int delx; int dely;
+        for(int b = 0; b< blocknums->size(); b++){
+            int x = Blocks[b].getx();
+            int y = Blocks[b].gety();
+            if(x < xMin){
+                xMin = x;
+            }
+            if(x> xMax){
+                xMax = x;
+            }
+            
+            if(y < yMin){
+                yMin = y;
+            }
+            if(y> yMax){
+                yMax = y;
+            }
+            
+        }
+        delx = xMax - xMin;
+        dely = yMax - yMin;
+        hpwl = hpwl+ delx+ dely;
+    }
+    return hpwl;
+}
 
 
 // then use these to find the first locations.
@@ -138,4 +172,10 @@ void ForYGetRightMatrix(vector<vector<int> > weights, vector<block> Blocks, vect
 // thats how we spread
 // only for the cct2 do this spread thing until a condition is met...
 
+
+// i have been able to make the basic functions for getting the matrices, setting of weights 
+// now only segregating into boxes and introducing dummy pin is left.
+// but how to divide??? i am confused.             
+// i am also confused about how to get half perimeter wire length..--- DONE!!
+// always get the numofblock and numofNets // also get the initial num of nets and num of block.
 
