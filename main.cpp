@@ -54,7 +54,12 @@ int main(int argc, const char * argv[]) {
         vector<int> Weights = getCorrespondingWeights(Blocks[a], &Nets, a, numOfBlocks);
         AllWeights.push_back(Weights);
     }
-    
+    vector<vector<int> > LeftMatrix;
+    vector<int> RightMatrix_X;
+    vector<int> RightMatrix_Y;
+    GetLeftMatrix(AllWeights, Blocks, &LeftMatrix, numOfBlocks);
+    ForXGetRightMatrix(AllWeights, Blocks, &RightMatrix_X, numOfBlocks);
+    ForYGetRightMatrix(AllWeights, Blocks, &RightMatrix_Y, numOfBlocks);
     
     /// parul's work ends here
     
