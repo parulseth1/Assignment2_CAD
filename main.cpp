@@ -13,7 +13,7 @@
 #include "UMFWrapper.h"
 #include "Placer.h"
 #include "APlacer.h"
-#define FILENAME "/home/eski/Parul/Assignment2/cct1.txt"
+#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct1.txt"
 using namespace::std;
 
 int main(int argc, const char * argv[]) {
