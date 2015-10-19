@@ -33,7 +33,7 @@ int main(int argc, const char * argv[]) {
         delete[] Nets;
     }
     
-    cout<<"Done";
+    cout<<"Done"<<endl;
     
     
     
@@ -50,8 +50,9 @@ int main(int argc, const char * argv[]) {
     for(int a = 0; a< Blocks.size(); a++){   /// check if dot or arrow
         setTotalWeight(Blocks[a],&Nets); 
     }
+    cout<<"weights set"<<endl;
     // now to to make the matrix.
-    int numOfBlocks = Blocks.size();
+    int numOfBlocks = Blocks.size(); // not getting set..
     for (int a =0; a<numOfBlocks;a++){
         vector<int> Weights = getCorrespondingWeights(Blocks[a], &Nets, a, numOfBlocks);
         AllWeights.push_back(Weights);
@@ -68,9 +69,9 @@ int main(int argc, const char * argv[]) {
     
     // put this after the umfpack stuff
     // from here.
-    int NumOfNet; // get this from parser because we wont need any other value for this
+     // get this from parser because we wont need any other value for this
                         // jus the initial value.
-    int HPWL = CalculateHPWL(&Nets, Blocks, NumOfNet);
+    int HPWL = CalculateHPWL(&Nets, Blocks, numNets);
     
     //to here
     

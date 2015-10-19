@@ -38,9 +38,15 @@ vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, i
             int count =0;
             for(int c = 0; c< w1.size(); c++){
                 if(w.blocknum == w1[c].blocknum){
-                   w1[c].weight = w1[c].weight + w.weight;
-                   count = count+1;
+                    if(w.blocknum = blocknumber){
+                        w1[c].weight = Block1.getTotalWeight();
+                    }
+                    else{
+                        w1[c].weight = w1[c].weight + w.weight;
+                        count = count+1;
+                    }
                 }
+                    
                     
             }
             if(count ==0){
@@ -49,12 +55,10 @@ vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, i
         } 
         
     }
+    cout<<"we got the corresponding weights"<<endl;
     for(int e =0; e< TotalNumOfPin; e++){
         int counter =0;
         for(int f = 0; f< w1.size(); f++){
-            if(e == f){
-                weights[w1[f].blocknum] = Block1.getTotalWeight();
-            }
             if(e == w1[f].blocknum){
                 counter = counter +1;
                 weights[w1[f].blocknum] = w1[f].weight;
