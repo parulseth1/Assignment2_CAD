@@ -26,14 +26,14 @@ void setTotalWeight(block Block1, Net** nets){
 
 vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, int TotalNumOfPin ){
     vector<int>* net = Block1.getNetNum();
-    vector<int> weights;
+    vector<int> weights(TotalNumOfPin);
     //vector<WeightandPin> w1;
     vector<WeightandPin> w1;
     WeightandPin w;
     for(int a = 0; a< net->size(); a++){  // arrow or dot
         vector<int>* blocknums = (*nets)[((*net)[a])].getBlockNums();
         for(int b = 0; b<blocknums->size(); b++){ //arrow or dot
-            w.blocknum = (*blocknums)[b];
+            w.blocknum = blocknums->at(b);
             w.weight = (*nets)[((*net)[a])].getPinWeight();
             int count =0;
             for(int c = 0; c< w1.size(); c++){
@@ -75,7 +75,7 @@ vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, i
 
 void GetLeftMatrix(vector<vector<int> > weights, vector<block> Blocks, vector<vector<int> >* LeftMatrix, int numOfBlocks){
     vector<int> weight;
-    vector<int> row;
+    vector<int> row(numOfBlocks);
     for(int a =0; a< numOfBlocks; a++){
         int counter = 0;
         if(Blocks[a].getFixed() != true){

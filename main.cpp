@@ -13,7 +13,7 @@
 #include "UMFWrapper.h"
 #include "Placer.h"
 #include "APlacer.h"
-#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct1.txt"
+#define FILENAME "/home/eski/Parul/Assignment2/Assignment2_CAD/cct1.txt"
 using namespace::std;
 
 int main(int argc, const char * argv[]) {
@@ -29,11 +29,7 @@ int main(int argc, const char * argv[]) {
         cout<<Nets[i].getNumPins()<<"::"<<Nets[i].getPinWeight()<<endl;
     }
     
-    if (Nets){
-        delete[] Nets;
-    }
     
-    cout<<"Done"<<endl;
     
     
     
@@ -108,5 +104,12 @@ int main(int argc, const char * argv[]) {
     
     
     doSolve(A, dim, &x, b);
+    
+    if (Nets){
+        delete[] Nets;
+    }
+    
+    cout<<"Done"<<endl;
+    
     return 0;
 }
