@@ -13,7 +13,9 @@
 #include "UMFWrapper.h"
 #include "Placer.h"
 #include "APlacer.h"
-#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct1.txt"
+#include "graphics.h"
+#include "Drawing.h"
+#define FILENAME "/home/eski/Parul/Assignment2/cct1.txt"
 using namespace::std;
 
 int main(int argc, const char * argv[]) {
@@ -37,7 +39,7 @@ int main(int argc, const char * argv[]) {
     
     ///Parul's work starts here
     
-    vector<vector<int> > AllWeights; /// gave some error here when i had not put space between the
+    vector<vector<int>> AllWeights; /// gave some error here when i had not put space between the
                                       // >> therefore had to put space. please check
     
     
@@ -104,6 +106,8 @@ int main(int argc, const char * argv[]) {
     
     
     doSolve(A, dim, &x, b);
+    
+    DrawOnScreen();
     
     if (Nets){
         delete[] Nets;

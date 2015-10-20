@@ -31,14 +31,21 @@ vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, i
     vector<WeightandPin> w1;
     WeightandPin w;
     for(int a = 0; a< net->size(); a++){  // arrow or dot
+<<<<<<< HEAD
         vector<int>* blocknums = (*nets)[((*net)[a]-1)].getBlockNums();
         for(int b = 0; b<blocknums->size(); b++){ //arrow or dot
             w.blocknum = blocknums->at(b);
+=======
+        vector<int>* blocknums = (*nets)[((*net)[a] - 1)].getBlockNums();
+        cout<<blocknums->size()<<"::"<<net->size()<<"::"<<(*net)[a]<<endl;
+        for(int b = 0; b < blocknums->size(); b++){ //arrow or dot
+            w.blocknum = blocknums->at(b); //seg faulting here
+>>>>>>> fcad5e3753f10dd4a3bcdf2c81fe2a38f88f2edd
             w.weight = (*nets)[((*net)[a])].getPinWeight();
-            int count =0;
+            int count = 0;
             for(int c = 0; c< w1.size(); c++){
                 if(w.blocknum == w1[c].blocknum){
-                    if(w.blocknum = blocknumber){
+                    if(w.blocknum == blocknumber){
                         w1[c].weight = Block1.getTotalWeight();
                     }
                     else{
@@ -49,7 +56,7 @@ vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, i
                     
                     
             }
-            if(count ==0){
+            if(count == 0){
                 w1.push_back(w); // dot or arrow
             }
         } 
