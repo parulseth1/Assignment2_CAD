@@ -15,7 +15,7 @@
 #include "APlacer.h"
 #include "graphics.h"
 #include "Drawing.h"
-#define FILENAME "/home/eski/Parul/Assignment2/cct1.txt"
+#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct1.txt"
 using namespace::std;
 
 int main(int argc, const char * argv[]) {
@@ -39,21 +39,27 @@ int main(int argc, const char * argv[]) {
     
     ///Parul's work starts here
     
-    vector<vector<int>> AllWeights; /// gave some error here when i had not put space between the
+    vector<vector<int> > AllWeights; /// gave some error here when i had not put space between the
                                       // >> therefore had to put space. please check
     
     
     // setting total weights for all the blocks.// this is an initial step.// after this
     // we would just add the weights of the dummy nets we create in order to spread.
     for(int a = 0; a< Blocks.size(); a++){   /// check if dot or arrow
-        setTotalWeight(&Blocks[a],&Nets); 
+        int tot_weight = setTotalWeight(Blocks[a],&Nets);
+        Blocks[a].AddTotalWeight(tot_weight);
     }
     cout<<"weights set"<<endl;
     // now to to make the matrix.
     int numOfBlocks = Blocks.size(); // not getting set..
     for (int a =0; a<numOfBlocks;a++){
-        vector<int> Weights = getCorrespondingWeights(Blocks[a], &Nets, a, numOfBlocks);
+        cout<<a<<endl;
+        vector<int> Weights = getCorrespondingWeights(Blocks[a], &Nets, a+1, numOfBlocks);
         AllWeights.push_back(Weights);
+        for(int b =0; b<numOfBlocks; b++){
+            cout<<Weights[b]<<endl;
+        }
+        cout<<endl;
     }
     vector<vector<int> > LeftMatrix;
     vector<int> RightMatrix_X;
@@ -61,6 +67,11 @@ int main(int argc, const char * argv[]) {
     GetLeftMatrix(AllWeights, Blocks, &LeftMatrix, numOfBlocks);
     ForXGetRightMatrix(AllWeights, Blocks, &RightMatrix_X, numOfBlocks);
     ForYGetRightMatrix(AllWeights, Blocks, &RightMatrix_Y, numOfBlocks);
+    
+    
+    
+        
+    
     
     /// parul's work ends here
     
@@ -104,8 +115,61 @@ int main(int argc, const char * argv[]) {
     A[4][2] = 2;
     A[4][4] = 1;
     
-    
+    int* y;
     doSolve(A, dim, &x, b);
+    doSolve(A, dim, &y, b);
+    int weight_quad;
+    int j =0;
+    for(int h = 0; h< Blocks.size(); h++){
+        if(Blocks[h].getFixed()!= true){
+            Blocks[h].setx(x[j]);
+            Blocks[h].sety(y[j]);
+            j++;
+        }
+    }
+    
+    point centroid = getCentroid(Blocks);
+    vector<quadrant> quad = spreading(Blocks, centroid, 100);
+    weight_quad =(1+.1) * 1;
+    //Blocks.AddTotalWeight(weight_quad);
+    
+    j = 0;
+    
+    for (int a =0; a<numOfBlocks;a++){
+        if(Blocks[a].getFixed()!= true){
+            Blocks[a].AddTotalWeight(weight_quad);
+            for(int k =0; k<quad[0].blocknums.size();k++){
+                if(Blocks[a].getBlockNum()== quad[0].blocknums[k]){
+                RightMatrix_X[j] = weight_quad * quad[0].dummy.x;
+                RightMatrix_Y[j] = weight_quad * quad[0].dummy.y;
+                }
+            } 
+            for(int k =0; k<quad[1].blocknums.size();k++){
+                if(Blocks[a].getBlockNum()== quad[1].blocknums[k]){
+                RightMatrix_X[j] = weight_quad * quad[1].dummy.x;
+                RightMatrix_Y[j] = weight_quad * quad[1].dummy.y;
+                }
+            }   
+            for(int k =0; k<quad[2].blocknums.size();k++){
+                if(Blocks[a].getBlockNum()== quad[2].blocknums[k]){
+                RightMatrix_X[j] = weight_quad * quad[2].dummy.x;
+                RightMatrix_Y[j] = weight_quad * quad[2].dummy.y;
+                }
+            }   
+            for(int k =0; k<quad[3].blocknums.size();k++){
+                if(Blocks[a].getBlockNum()==quad[3].blocknums[k]){
+                RightMatrix_X[j] = weight_quad * quad[3].dummy.x;
+                RightMatrix_Y[j] = weight_quad * quad[3].dummy.y;
+                }
+            }   
+        }
+    }
+    for (int a =0; a<numOfBlocks;a++){
+        vector<int> Weights = getCorrespondingWeights(Blocks[a], &Nets, a, numOfBlocks);
+        AllWeights.push_back(Weights);
+    }
+    //vector<vector<int> > LeftMatrix;
+    GetLeftMatrix(AllWeights, Blocks, &LeftMatrix, numOfBlocks);
     
     DrawOnScreen();
     

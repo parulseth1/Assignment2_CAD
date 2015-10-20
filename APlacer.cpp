@@ -12,15 +12,18 @@
 #include "Placer.h"
 
 // have to get the weights put in for each block using the nets it is connected to.
-void setTotalWeight(block* Block1, Net** nets){ // some issue here. got to fix it
-    vector<int>* net = (*Block1).getNetNum();
+int setTotalWeight(block Block1, Net** nets){ // some issue here. got to fix it
+    vector<int>* net = Block1.getNetNum();
     int weight = 0;
+    //int Netweight
     for(int a =0; a< net->size(); a++){  // dont know if we have to use dot or arrow.
-        int numpins = (*nets)[((*net)[a])].getNumPins();
-        int Netweight = (*nets)[((*net)[a])].getPinWeight() * (numpins-1);
-        int weight = weight + Netweight;  
+        int numpins = (*nets)[((*net)[a]-1)].getNumPins();
+        int Netweight = (*nets)[((*net)[a]-1)].getPinWeight() * (numpins-1);
+        weight = weight + Netweight; 
+        
     }
-   (*Block1).AddTotalWeight(weight); 
+    cout<< weight<<endl;
+   return weight; 
     
 }
 
@@ -28,28 +31,32 @@ vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, i
     vector<int>* net = Block1.getNetNum();
     vector<int> weights(TotalNumOfPin);
     //vector<WeightandPin> w1;
-    vector<WeightandPin> w1;
+    vector<WeightandPin> w1(TotalNumOfPin);
     WeightandPin w;
+    int total = Block1.getTotalWeight();
+    cout<<"total weight:: "<<total<<endl;
     for(int a = 0; a< net->size(); a++){  // arrow or dot
-<<<<<<< HEAD
+
         vector<int>* blocknums = (*nets)[((*net)[a]-1)].getBlockNums();
         for(int b = 0; b<blocknums->size(); b++){ //arrow or dot
+            
             w.blocknum = blocknums->at(b);
-=======
-        vector<int>* blocknums = (*nets)[((*net)[a] - 1)].getBlockNums();
-        cout<<blocknums->size()<<"::"<<net->size()<<"::"<<(*net)[a]<<endl;
-        for(int b = 0; b < blocknums->size(); b++){ //arrow or dot
-            w.blocknum = blocknums->at(b); //seg faulting here
->>>>>>> fcad5e3753f10dd4a3bcdf2c81fe2a38f88f2edd
-            w.weight = (*nets)[((*net)[a])].getPinWeight();
+            
+            w.weight = ((*nets)[((*net)[a]-1)].getPinWeight());
+            w.weight = -w.weight;
+            //cout<<w.weight<<endl;
+            
+            
             int count = 0;
             for(int c = 0; c< w1.size(); c++){
                 if(w.blocknum == w1[c].blocknum){
                     if(w.blocknum == blocknumber){
                         w1[c].weight = Block1.getTotalWeight();
+                        //cout<<"total weight"<<endl;
+                        count++;
                     }
                     else{
-                        w1[c].weight = w1[c].weight + w.weight;
+                        w1[c].weight = (w1[c].weight + w.weight);
                         count = count+1;
                     }
                 }
@@ -66,9 +73,9 @@ vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, i
     for(int e =0; e< TotalNumOfPin; e++){
         int counter =0;
         for(int f = 0; f< w1.size(); f++){
-            if(e == w1[f].blocknum){
+            if((e+1 )== w1[f].blocknum){
                 counter = counter +1;
-                weights[w1[f].blocknum] = w1[f].weight;
+                weights[(w1[f].blocknum)-1] = w1[f].weight;
             }
        
         }
@@ -90,9 +97,11 @@ void GetLeftMatrix(vector<vector<int> > weights, vector<block> Blocks, vector<ve
             for(int b=0; b< numOfBlocks; b++){
                 if(Blocks[b].getFixed() != true){
                     row[counter] = weight[b];
+                    cout<<weight[b]<<endl;
                     counter++;
                 }
             }
+            cout<<endl;
         }
         LeftMatrix->push_back(row);
         row.clear();
@@ -224,17 +233,17 @@ vector<quadrant> spreading(vector<block> Block, point centroid, int size_quad){
             int x = Block[a].getx();
             int y = Block[a].gety();
             if(x< centroid.x && y < centroid.y){ // quad 3
-                quads[2].blocknums.push_back(a);
+                quads[2].blocknums.push_back(a+1);
 
             }
             if(x< centroid.x && y > centroid.y){ // quad 2
-                quads[1].blocknums.push_back(a);
+                quads[1].blocknums.push_back(a+1);
             }
             if(x> centroid.x && y < centroid.y){ // quad 4
-                quads[3].blocknums.push_back(a);
+                quads[3].blocknums.push_back(a+1);
             }
             if(x> centroid.x && y > centroid.y){ // quad 1
-                quads[1].blocknums.push_back(a);
+                quads[1].blocknums.push_back(a+1);
             }
         }
         
