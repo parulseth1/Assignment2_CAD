@@ -13,7 +13,7 @@
 #include "UMFWrapper.h"
 #include "Placer.h"
 #include "APlacer.h"
-#define FILENAME "/home/eski/Parul/Assignment2/Assignment2_CAD/cct1.txt"
+#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct1.txt"
 using namespace::std;
 
 int main(int argc, const char * argv[]) {
@@ -44,7 +44,7 @@ int main(int argc, const char * argv[]) {
     // setting total weights for all the blocks.// this is an initial step.// after this
     // we would just add the weights of the dummy nets we create in order to spread.
     for(int a = 0; a< Blocks.size(); a++){   /// check if dot or arrow
-        setTotalWeight(Blocks[a],&Nets); 
+        setTotalWeight(&Blocks[a],&Nets); 
     }
     cout<<"weights set"<<endl;
     // now to to make the matrix.

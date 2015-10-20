@@ -12,15 +12,15 @@
 #include "Placer.h"
 
 // have to get the weights put in for each block using the nets it is connected to.
-void setTotalWeight(block Block1, Net** nets){
-    vector<int>* net = Block1.getNetNum();
+void setTotalWeight(block* Block1, Net** nets){ // some issue here. got to fix it
+    vector<int>* net = (*Block1).getNetNum();
     int weight = 0;
     for(int a =0; a< net->size(); a++){  // dont know if we have to use dot or arrow.
         int numpins = (*nets)[((*net)[a])].getNumPins();
         int Netweight = (*nets)[((*net)[a])].getPinWeight() * (numpins-1);
         int weight = weight + Netweight;  
     }
-   Block1.AddTotalWeight(weight); 
+   (*Block1).AddTotalWeight(weight); 
     
 }
 
@@ -166,6 +166,77 @@ int CalculateHPWL(Net** net, vector<block> Blocks, int NumOfNets){
     return hpwl;
 }
 
+point getCentroid(vector<block> Blocks){
+    point centroid;
+    point points;
+    centroid.x = 0;
+    centroid.y = 0;
+    int num = Blocks.size();
+ for(int a = 0; a<num; a++){
+    points.x = Blocks[a].getx();
+    points.y = Blocks[a].gety();
+    centroid.x = centroid.x + points.x;
+    centroid.y = centroid.y + points.y;
+ }  
+   centroid.x = centroid.x/num;
+   centroid.y = centroid.y/num;
+   return centroid;
+}
+
+point getDummyPin(quadrant quad){
+    point dummy;
+    if(quad.quad_num == 1){
+        dummy.x = (quad.size)/2;
+        dummy.y = ((quad.size)/2) + quad.size;   
+    }
+    if(quad.quad_num == 2){
+        dummy.x = (quad.size)/2;
+        dummy.y = (quad.size)/2;   
+    }
+    if(quad.quad_num == 3){
+        dummy.y = (quad.size)/2;
+        dummy.x = ((quad.size)/2) + quad.size;   
+    }
+    if(quad.quad_num == 4){
+        dummy.x = ((quad.size)/2) + quad.size;
+        dummy.y = ((quad.size)/2) + quad.size;   
+    }
+    return dummy;
+}
+
+vector<quadrant> spreading(vector<block> Block, point centroid, int size_quad){
+    vector<quadrant> quads;
+        for(int a=0; a<4; a++){
+            quads[a].quad_num = a+1;
+            quads[a].size = size_quad/2;
+            quads[a].dummy = getDummyPin(quads[a]);
+            
+        }
+    for(int a = 0; a< Block.size(); a++){
+        int x = Block[a].getx();
+        int y = Block[a].gety();
+        if(x< centroid.x && y < centroid.y){ // quad 3
+            quads[2].blocknums.push_back(a);
+            
+        }
+        if(x< centroid.x && y > centroid.y){ // quad 2
+            quads[1].blocknums.push_back(a);
+        }
+        if(x> centroid.x && y < centroid.y){ // quad 4
+            quads[3].blocknums.push_back(a);
+        }
+        if(x> centroid.x && y > centroid.y){ // quad 1
+            quads[1].blocknums.push_back(a);
+        }
+        
+    }
+    
+}
+
+
+
+
+
 
 // then use these to find the first locations.
 // then, how to calculate Half Perimeter wire length?? finally find the total wire used..
@@ -178,7 +249,8 @@ int CalculateHPWL(Net** net, vector<block> Blocks, int NumOfNets){
 
 
 // i have been able to make the basic functions for getting the matrices, setting of weights 
-// now only segregating into boxes and introducing dummy pin is left.
+// now only segregating into boxes and 
+//introducing dummy pin is left. -- done
 // but how to divide??? i am confused.             
 // i am also confused about how to get half perimeter wire length..--- DONE!!
 // always get the numofblock and numofNets // also get the initial num of nets and num of block.
