@@ -91,57 +91,65 @@ void GetLeftMatrix(vector<vector<int> > weights, vector<block> Blocks, vector<ve
     vector<int> weight;
     vector<int> row(numOfBlocks);
     for(int a =0; a< numOfBlocks; a++){
-        int counter = 0;
+        //int counter = 0;
         if(Blocks[a].getFixed() != true){
             weight = weights[a];
             for(int b=0; b< numOfBlocks; b++){
                 if(Blocks[b].getFixed() != true){
-                    row[counter] = weight[b];
+                    row.push_back(weight[b]);
                     cout<<weight[b]<<endl;
-                    counter++;
+                    //counter++;
                 }
             }
             cout<<endl;
+            cout<<"RowSizefrom get left matrix"<<row.size()<<endl;
+            LeftMatrix->push_back(row);
         }
-        LeftMatrix->push_back(row);
+        
         row.clear();
     }
     
 }
 
-void ForXGetRightMatrix(vector<vector<int> > weights, vector<block> Blocks, vector<int>* RightMatrix, int numOfBlocks){
+void ForXGetRightMatrix(vector<vector<int>> weights, vector<block> Blocks, vector<int>* RightMatrix, int numOfBlocks){
    vector<int> weight;
-    int row =0;
+    //int row =0;
     for(int a =0; a< numOfBlocks; a++){
         if(Blocks[a].getFixed() != true){
             weight = weights[a];
+            int row = 0;
             for(int b=0; b< numOfBlocks; b++){
                 if(Blocks[b].getFixed() == true){
                     int x = Blocks[b].getx();
-                    row = row + (weight[b])*x;
+                    row = row - (weight[b]*x);
                 }
             }
+            RightMatrix->push_back(row);
         }
-        RightMatrix->push_back(row);
+        
     }
      
 }
 
 
-void ForYGetRightMatrix(vector<vector<int> > weights, vector<block> Blocks, vector<int>* RightMatrix, int numOfBlocks){
+void ForYGetRightMatrix(vector<vector<int>> weights, vector<block> Blocks, vector<int>* RightMatrix, int numOfBlocks){
    vector<int> weight;
-    int row =0;
+    //int row =0;
     for(int a =0; a< numOfBlocks; a++){
         if(Blocks[a].getFixed() != true){
             weight = weights[a];
+            int row = 0;
+            cout<<Blocks[a].getBlockNum()<<endl;
             for(int b=0; b< numOfBlocks; b++){
                 if(Blocks[b].getFixed() == true){
-                    int y = Blocks[b].gety();
-                    row = row + (weight[b])*y;
+                    int x = Blocks[b].gety();
+                    row = row - (weight[b]*x);
+                    cout<<"weight at"<<b+1<<":"<<weight[b]<<endl;
                 }
             }
+            RightMatrix->push_back(row);
         }
-        RightMatrix->push_back(row);
+        
     }
      
 }

@@ -61,16 +61,34 @@ int main(int argc, const char * argv[]) {
         }
         cout<<endl;
     }
-    vector<vector<int> > LeftMatrix;
+    vector<vector<int>> LeftMatrix;
     vector<int> RightMatrix_X;
     vector<int> RightMatrix_Y;
     GetLeftMatrix(AllWeights, Blocks, &LeftMatrix, numOfBlocks);
     ForXGetRightMatrix(AllWeights, Blocks, &RightMatrix_X, numOfBlocks);
     ForYGetRightMatrix(AllWeights, Blocks, &RightMatrix_Y, numOfBlocks);
+    cout<<"Left Matrix"<<endl;
+    for(int a1 = 0; a1 < LeftMatrix.size(); a1++){
+        for (int a2 = 0; a2 < LeftMatrix[a1].size(); a2++) {
+            cout << LeftMatrix[a1][a2]<<"::";
+
+        }
+        cout<<endl;
+    }
+    cout<<endl<<"for x"<<endl;
+    for(int a1 = 0; a1 < RightMatrix_X.size(); a1++){
+            cout << RightMatrix_X[a1]<<"::";
+    
+    }
+    cout<<endl<<"for Y"<<endl;
+      for(int a1 = 0; a1 < RightMatrix_Y.size(); a1++){
+            cout << RightMatrix_Y[a1]<<"::";
+
+    }
+    cout<<endl;
     
     
     
-        
     
     
     /// parul's work ends here
@@ -88,34 +106,34 @@ int main(int argc, const char * argv[]) {
     
     //UMFPACK STUFF
     int* x = NULL;
-    int dim = 5;
-    int b[] = {0, 0, 0, 0, 0};
+    int dim = 6;
+    int b[] = {0, 0, 0, 0, 0,0};
     int** A = NULL;
-    A = new int* [5];
-    for (int i =0; i < 5; i++){
-        A[i] = new int[5];
+    A = new int* [dim];
+    for (int i =0; i < dim; i++){
+        A[i] = new int[dim];
     }
     
     for (int i = 0; i < dim; i++){
         for (int j = 0; j < dim; j++){
-            A[i][j] = 0;
+            A[i][j] = LeftMatrix[i][j];
         }
     }
     
-    A[0][0] = 2;
-    A[0][1] = 3;
-    A[1][0] = 3;
-    A[1][2] = 4;
-    A[1][4] = 6;
-    A[2][1] = -1;
-    A[2][2] = -3;
-    A[2][3] = 2;
-    A[3][2] = 1;
-    A[4][1] = 4;
-    A[4][2] = 2;
-    A[4][4] = 1;
+//    A[0][0] = 2;
+//    A[0][1] = 3;
+//    A[1][0] = 3;
+//    A[1][2] = 4;
+//    A[1][4] = 6;
+//    A[2][1] = -1;
+//    A[2][2] = -3;
+//    A[2][3] = 2;
+//    A[3][2] = 1;
+//    A[4][1] = 4;
+//    A[4][2] = 2;
+//    A[4][4] = 1;
     
-    int* y;
+    int* y = NULL;
     doSolve(A, dim, &x, b);
     doSolve(A, dim, &y, b);
     int weight_quad;
