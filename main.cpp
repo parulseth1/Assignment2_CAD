@@ -13,6 +13,8 @@
 #include "UMFWrapper.h"
 #include "Placer.h"
 #include "APlacer.h"
+#include "graphics.h"
+#include "Drawing.h"
 #define FILENAME "/home/eski/Parul/Assignment2/cct1.txt"
 using namespace::std;
 
@@ -29,11 +31,7 @@ int main(int argc, const char * argv[]) {
         cout<<Nets[i].getNumPins()<<"::"<<Nets[i].getPinWeight()<<endl;
     }
     
-    if (Nets){
-        delete[] Nets;
-    }
     
-    cout<<"Done";
     
     
     
@@ -41,17 +39,18 @@ int main(int argc, const char * argv[]) {
     
     ///Parul's work starts here
     
-    vector<vector<int> > AllWeights; /// gave some error here when i had not put space between the
+    vector<vector<int>> AllWeights; /// gave some error here when i had not put space between the
                                       // >> therefore had to put space. please check
     
     
     // setting total weights for all the blocks.// this is an initial step.// after this
     // we would just add the weights of the dummy nets we create in order to spread.
     for(int a = 0; a< Blocks.size(); a++){   /// check if dot or arrow
-        setTotalWeight(Blocks[a],&Nets); 
+        setTotalWeight(&Blocks[a],&Nets); 
     }
+    cout<<"weights set"<<endl;
     // now to to make the matrix.
-    int numOfBlocks = Blocks.size();
+    int numOfBlocks = Blocks.size(); // not getting set..
     for (int a =0; a<numOfBlocks;a++){
         vector<int> Weights = getCorrespondingWeights(Blocks[a], &Nets, a, numOfBlocks);
         AllWeights.push_back(Weights);
@@ -68,9 +67,9 @@ int main(int argc, const char * argv[]) {
     
     // put this after the umfpack stuff
     // from here.
-    int NumOfNet; // get this from parser because we wont need any other value for this
+     // get this from parser because we wont need any other value for this
                         // jus the initial value.
-    int HPWL = CalculateHPWL(&Nets, Blocks, NumOfNet);
+    int HPWL = CalculateHPWL(&Nets, Blocks, numNets);
     
     //to here
     
@@ -107,5 +106,14 @@ int main(int argc, const char * argv[]) {
     
     
     doSolve(A, dim, &x, b);
+    
+    DrawOnScreen();
+    
+    if (Nets){
+        delete[] Nets;
+    }
+    
+    cout<<"Done"<<endl;
+    
     return 0;
 }

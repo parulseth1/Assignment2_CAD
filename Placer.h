@@ -100,5 +100,19 @@ struct WeightandPin{
     int weight;
 };
 
+struct point{
+    int x;
+    int y;
+};
+
+struct quadrant{
+    point dummy;
+    int quad_num;
+    vector<int> blocknums;
+    int size;
+    //int numOfBlock;
+    point Centroid;
+};
+
 #endif	/* PLACER_H */
 
