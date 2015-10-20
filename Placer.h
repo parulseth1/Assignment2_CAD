@@ -109,8 +109,7 @@ struct quadrant{
     int quad_num;
     vector<int> blocknums;
     int size;
-    //int numOfBlock;
-    point Centroid;
+    int weight;
 };
 
 #endif	/* PLACER_H */

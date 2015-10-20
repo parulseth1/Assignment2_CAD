@@ -19,6 +19,8 @@ void ForXGetRightMatrix(vector<vector<int> > , vector<block>, vector<int>* , int
 void ForYGetRightMatrix(vector<vector<int> > , vector<block>, vector<int>* , int);
 int CalculateHPWL(Net**, vector<block>, int);
 point getCentroid(vector<block>, int);
+vector<quadrant> spreading(vector<block>, point, int);
+point getDummyPin(quadrant);
 
 #endif	/* APLACER_H */
 

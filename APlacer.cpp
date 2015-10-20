@@ -31,7 +31,7 @@ vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, i
     vector<WeightandPin> w1;
     WeightandPin w;
     for(int a = 0; a< net->size(); a++){  // arrow or dot
-        vector<int>* blocknums = (*nets)[((*net)[a])].getBlockNums();
+        vector<int>* blocknums = (*nets)[((*net)[a]-1)].getBlockNums();
         for(int b = 0; b<blocknums->size(); b++){ //arrow or dot
             w.blocknum = blocknums->at(b);
             w.weight = (*nets)[((*net)[a])].getPinWeight();
@@ -213,24 +213,26 @@ vector<quadrant> spreading(vector<block> Block, point centroid, int size_quad){
             
         }
     for(int a = 0; a< Block.size(); a++){
-        int x = Block[a].getx();
-        int y = Block[a].gety();
-        if(x< centroid.x && y < centroid.y){ // quad 3
-            quads[2].blocknums.push_back(a);
-            
-        }
-        if(x< centroid.x && y > centroid.y){ // quad 2
-            quads[1].blocknums.push_back(a);
-        }
-        if(x> centroid.x && y < centroid.y){ // quad 4
-            quads[3].blocknums.push_back(a);
-        }
-        if(x> centroid.x && y > centroid.y){ // quad 1
-            quads[1].blocknums.push_back(a);
+        if(Block[a].getFixed()!= true){
+            int x = Block[a].getx();
+            int y = Block[a].gety();
+            if(x< centroid.x && y < centroid.y){ // quad 3
+                quads[2].blocknums.push_back(a);
+
+            }
+            if(x< centroid.x && y > centroid.y){ // quad 2
+                quads[1].blocknums.push_back(a);
+            }
+            if(x> centroid.x && y < centroid.y){ // quad 4
+                quads[3].blocknums.push_back(a);
+            }
+            if(x> centroid.x && y > centroid.y){ // quad 1
+                quads[1].blocknums.push_back(a);
+            }
         }
         
     }
-    
+ return quads;   
 }
 
 
