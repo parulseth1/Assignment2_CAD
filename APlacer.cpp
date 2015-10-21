@@ -228,35 +228,44 @@ point getDummyPin(quadrant quad){
     return dummy;
 }
 
-quadrant* spreading(vector<block> Block, point centroid, int size_quad){
+quadrant* MakeQuads(vector<block> Block, int size_quad, int weight){
     quadrant quads[4];
         for(int a=0; a<4; a++){
             quads[a].quad_num = a+1;
             quads[a].size = size_quad/2;
             quads[a].dummy = getDummyPin(quads[a]);
+            quads[a].weight = weight;
             
         }
-    for(int a = 0; a< Block.size(); a++){
-        if(Block[a].getFixed()!= true){
-            int x = Block[a].getx();
-            int y = Block[a].gety();
-            if(x< centroid.x && y < centroid.y){ // quad 3
-                quads[2].blocknums.push_back(a+1);
-
-            }
-            if(x< centroid.x && y > centroid.y){ // quad 2
-                quads[1].blocknums.push_back(a+1);
-            }
-            if(x> centroid.x && y < centroid.y){ // quad 4
-                quads[3].blocknums.push_back(a+1);
-            }
-            if(x> centroid.x && y > centroid.y){ // quad 1
-                quads[1].blocknums.push_back(a+1);
-            }
+    return quads;
+}
+int PutBoxInQuads(block Block, quadrant** quads, point centroid){
+   
+    int x = Block.getx();
+    int y = Block.gety();
+    int quad_num;
+    if(x< centroid.x){
+        if( y < centroid.y){ // quad 3
+            (*quads)[2].blocknums.push_back(Block.getBlockNum());
+            quad_num = 2;
         }
-        
+        if(y > centroid.y){ // quad 2
+            (*quads)[1].blocknums.push_back(Block.getBlockNum());
+            quad_num = 1;
+        }
     }
- return quads;   
+    if(x> centroid.x){
+
+        if( y < centroid.y){ // quad 4
+            (*quads)[3].blocknums.push_back(Block.getBlockNum());
+            quad_num =3;
+        }
+        if(y > centroid.y){ // quad 1
+            (*quads)[1].blocknums.push_back(Block.getBlockNum());
+            quad_num =1;
+        }
+    }    
+    return quad_num;   
 }
 
 

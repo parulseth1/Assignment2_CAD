@@ -158,43 +158,23 @@ int main(int argc, const char * argv[]) {
             j++;
         }
     }
-    
+    j =0;
     point centroid = getCentroid(Blocks, numOfBlocks);
-   quadrant* quad = spreading(Blocks, centroid, 100);
-    weight_quad =(1+.1) * 1;
-    //Blocks.AddTotalWeight(weight_quad);
-    
-    j = 0;
-    
-    for (int a =0; a<numOfBlocks;a++){
-        if(Blocks[a].getFixed()!= true){
-            Blocks[a].AddTotalWeight(weight_quad);
-            for(int k =0; k<quad[0].blocknums.size();k++){
-                if(Blocks[a].getBlockNum()== quad[0].blocknums[k]){
-                RightMatrix_X[j] = weight_quad * quad[0].dummy.x;
-                RightMatrix_Y[j] = weight_quad * quad[0].dummy.y;
-                }
+    quadrant* quad = MakeQuads(Blocks, 100, 2);
+    cout<<"got the quadrants"<<endl;
+    for(int i =0; i<numOfBlocks; i++){
+        if(Blocks[i].getFixed()!= true){
+            cout<<i<<endl;
+            int quad_num = PutBoxInQuads(Blocks[i],&quad,centroid);
+            Blocks[i].AddTotalWeight(quad[quad_num].weight);
+            RightMatrix_X[j] = RightMatrix_X[j]+(quad[quad_num].weight * quad[quad_num].dummy.x);
+            RightMatrix_Y[j] = RightMatrix_Y[j]+(quad[quad_num].weight * quad[quad_num].dummy.y);
+            j++;
             } 
-            for(int k =0; k<quad[1].blocknums.size();k++){
-                if(Blocks[a].getBlockNum()== quad[1].blocknums[k]){
-                RightMatrix_X[j] = weight_quad * quad[1].dummy.x;
-                RightMatrix_Y[j] = weight_quad * quad[1].dummy.y;
-                }
-            }   
-            for(int k =0; k<quad[2].blocknums.size();k++){
-                if(Blocks[a].getBlockNum()== quad[2].blocknums[k]){
-                RightMatrix_X[j] = weight_quad * quad[2].dummy.x;
-                RightMatrix_Y[j] = weight_quad * quad[2].dummy.y;
-                }
-            }   
-            for(int k =0; k<quad[3].blocknums.size();k++){
-                if(Blocks[a].getBlockNum()==quad[3].blocknums[k]){
-                RightMatrix_X[j] = weight_quad * quad[3].dummy.x;
-                RightMatrix_Y[j] = weight_quad * quad[3].dummy.y;
-                }
-            }   
-        }
     }
+
+
+    
     for (int a =0; a<numOfBlocks;a++){
         vector<int> Weights = getCorrespondingWeights(Blocks[a], &Nets, a, numOfBlocks);
         AllWeights.push_back(Weights);
