@@ -31,14 +31,12 @@ public:
         return &netnum;
     }
     void setx(int _x){
-        fixed = true;
         x = _x;
     }
     int getx(){
         return x;
     }
     void sety(int _y){
-        fixed = true;
         y = _y;
     }
     int gety(){
@@ -55,6 +53,9 @@ public:
         return fixed;
     }
     
+    void setFixed(bool _fixed){
+        fixed = _fixed;
+    }
     void AddTotalWeight(int weight){
         totalWeight = totalWeight + weight;
     }

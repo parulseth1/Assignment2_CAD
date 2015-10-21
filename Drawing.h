@@ -2,11 +2,11 @@
 #define DRAWING_HEADER
 
 #include "graphics.h"
-//#include "Placer.h"
-//#include "Aplacer.h"
+#include "Placer.h"
+#include "APlacer.h"
 
 int LoadBlocks(int*, int*, int, int);
-int LoadRatsNest();
+int LoadRatsNest(Net*, int);
 int DrawOnScreen();
 
 

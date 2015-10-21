@@ -9,6 +9,9 @@ int* x = NULL;
 int* y = NULL;
 int gridSize = 10;
 int blockCnt = 0;
+Net* nets = NULL;
+int netCnt = 0;
+vector<block> Blocks;
 
 int LoadBlocks(int* _x, int* _y, int _blockCnt, int _gridSize) {
 
@@ -18,8 +21,9 @@ int LoadBlocks(int* _x, int* _y, int _blockCnt, int _gridSize) {
     gridSize = _gridSize;
 }
 
-int LoadRatsNest() {
-
+int LoadRatsNest(Net* _nets, int _netCnt) {
+    nets = _nets;
+    netCnt = _netCnt;
 }
 
 int DrawOnScreen() {
@@ -56,6 +60,21 @@ void drawscreen() {
     }
 
     //draw the rats nest
-    //for this, we will need to have the exact data, of which block connects to which other blocks
+    setcolor(255, 0, 0);
+    //for each net 
+    if (nets != NULL){
+        for (int i = 0; i < netCnt; i++){
+            vector<int>* blocks = nets[i].getBlockNums();
+            for (int j = 0; j < blocks->size(); j++){
+                for (int k = j + 1; k < blocks->size(); k++){
+                    int x1 = x[(*blocks)[j]-1];
+                    int y1 = y[(*blocks)[j]-1];
+                    int x2 = x[(*blocks)[k]-1];
+                    int y2 = y[(*blocks)[k]-1];
+                    drawline(rectOffset + blockDim*x1 + blockDim/2, rectOffset + blockDim*y1 + blockDim/2, rectOffset + blockDim*x2 + blockDim/2, rectOffset + blockDim*y2 + blockDim/2);
+                }
+            }
+        }
+    }
     //	
 }

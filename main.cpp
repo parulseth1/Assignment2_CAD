@@ -105,10 +105,10 @@ int main(int argc, const char * argv[]) {
     
     
     //UMFPACK STUFF
-    int* x = NULL;
+    double* x = NULL;
     int dim = 6;
-    int bx[] = {0, 0, 0, 0, 0,0};
-    int by[] = {0, 0, 0, 0, 0,0};
+    double bx[] = {0, 0, 0, 0, 0,0};
+    double by[] = {0, 0, 0, 0, 0,0};
     int** A = NULL;
     A = new int* [dim];
     for (int i =0; i < dim; i++){
@@ -139,7 +139,7 @@ int main(int argc, const char * argv[]) {
 //    A[4][2] = 2;
 //    A[4][4] = 1;
     
-    int* y = NULL;
+    double* y = NULL;
     doSolve(A, dim, &x, bx);
     doSolve(A, dim, &y, by);
     
@@ -148,6 +148,7 @@ int main(int argc, const char * argv[]) {
     }
     
     int HPWL = CalculateHPWL(&Nets, Blocks, numNets);
+
     int weight_quad;
     int j =0;
     for(int h = 0; h< Blocks.size(); h++){
