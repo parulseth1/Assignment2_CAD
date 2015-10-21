@@ -14,7 +14,7 @@ extern "C" {
 
 using namespace::std;
 
-#define DEBUGUMF
+#define DEBUGUMF;
 
 int doSolve(int** A, int dim, double** x, double* b){
     //A is a square matrix
@@ -69,12 +69,26 @@ int doSolve(int** A, int dim, double** x, double* b){
     int i;
     void *Symbolic, *Numeric;
 
-    (void) umfpack_di_symbolic(dim, dim, Ap, Ai, Ax, &Symbolic, null, null);
-    (void) umfpack_di_numeric(Ap, Ai, Ax, Symbolic, &Numeric, null, null);
+    status =  umfpack_di_symbolic(dim, dim, Ap, Ai, Ax, &Symbolic, null, null);
+    if (status != UMFPACK_OK) {
+            cout<<"error"<<endl;
+            return EXIT_FAILURE;
+    }
+    status = umfpack_di_numeric(Ap, Ai, Ax, Symbolic, &Numeric, null, null);
+    if (status != UMFPACK_OK) {
+            cout<<"error"<<endl;
+            return EXIT_FAILURE;
+    }
     umfpack_di_free_symbolic(&Symbolic);
-    (void) umfpack_di_solve(UMFPACK_A, Ap, Ai, Ax, *x, b, Numeric, null, null);
+    
+    *x = new double[dim];
+    status = umfpack_di_solve(UMFPACK_A, Ap, Ai, Ax, *x, b, Numeric, null, null);
+    if (status != UMFPACK_OK) {
+            cout<<"error : "<<status<<endl;
+            return EXIT_FAILURE;
+    }
     umfpack_di_free_numeric(&Numeric);
-    for (i = 0; i < dim; i++) printf("x [%d] = %g\n", i, *x [i]);
+    //for (i = 0; i < dim; i++) printf("x [%d] = %g\n", i, *x [i]);
     
     
     delete[] Ti;

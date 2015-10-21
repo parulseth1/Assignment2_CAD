@@ -15,7 +15,7 @@
 #include "APlacer.h"
 #include "graphics.h"
 #include "Drawing.h"
-#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct1.txt"
+#define FILENAME "/home/eski/Parul/Assignment2/cct1.txt"
 using namespace::std;
 
 int main(int argc, const char * argv[]) {
