@@ -207,62 +207,55 @@ point getCentroid(vector<block> Blocks,int num){
    return centroid;
 }
 
-point getDummyPin(quadrant quad){
-    point dummy;
-    if(quad.quad_num == 1){
-        dummy.x = (quad.size)/2;
-        dummy.y = ((quad.size)/2) + quad.size;   
-    }
-    if(quad.quad_num == 2){
-        dummy.x = (quad.size)/2;
-        dummy.y = (quad.size)/2;   
-    }
-    if(quad.quad_num == 3){
-        dummy.y = (quad.size)/2;
-        dummy.x = ((quad.size)/2) + quad.size;   
-    }
-    if(quad.quad_num == 4){
-        dummy.x = ((quad.size)/2) + quad.size;
-        dummy.y = ((quad.size)/2) + quad.size;   
-    }
-    return dummy;
-}
 
 quadrant* MakeQuads(vector<block> Block, int size_quad, int weight){
     quadrant quads[4];
+    point dummy;
         for(int a=0; a<4; a++){
             quads[a].quad_num = a+1;
             quads[a].size = size_quad/2;
-            quads[a].dummy = getDummyPin(quads[a]);
+            if(a == 0){
+                dummy.x = (size_quad)/2;
+                dummy.y = (size_quad/2) + size_quad;   
+            }
+            if(a == 1){
+                dummy.x = (size_quad)/2;
+                dummy.y = (size_quad)/2;   
+            }
+            if(a == 2){
+                dummy.y = (size_quad)/2;
+                dummy.x = (size_quad/2) + size_quad;   
+            }
+            if(a== 3){
+                dummy.x = (size_quad/2) + size_quad;
+                dummy.y = (size_quad/2) + size_quad;   
+            }
+            quads[a].dummy = dummy;
             quads[a].weight = weight;
             
         }
     return quads;
 }
-int PutBoxInQuads(block Block, quadrant** quads, point centroid){
+int PutBoxInQuads(block Block, point centroid){
    
     int x = Block.getx();
     int y = Block.gety();
     int quad_num;
     if(x< centroid.x){
         if( y < centroid.y){ // quad 3
-            (*quads)[2].blocknums.push_back(Block.getBlockNum());
             quad_num = 2;
         }
         if(y > centroid.y){ // quad 2
-            (*quads)[1].blocknums.push_back(Block.getBlockNum());
             quad_num = 1;
         }
     }
     if(x> centroid.x){
 
         if( y < centroid.y){ // quad 4
-            (*quads)[3].blocknums.push_back(Block.getBlockNum());
             quad_num =3;
         }
         if(y > centroid.y){ // quad 1
-            (*quads)[1].blocknums.push_back(Block.getBlockNum());
-            quad_num =1;
+            quad_num =0;
         }
     }    
     return quad_num;   

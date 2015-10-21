@@ -165,11 +165,12 @@ int main(int argc, const char * argv[]) {
     for(int i =0; i<numOfBlocks; i++){
         if(Blocks[i].getFixed()!= true){
             cout<<i<<endl;
-            int quad_num = PutBoxInQuads(Blocks[i],&quad,centroid);
+            int quad_num = PutBoxInQuads(Blocks[i], centroid);
             Blocks[i].AddTotalWeight(quad[quad_num].weight);
             RightMatrix_X[j] = RightMatrix_X[j]+(quad[quad_num].weight * quad[quad_num].dummy.x);
             RightMatrix_Y[j] = RightMatrix_Y[j]+(quad[quad_num].weight * quad[quad_num].dummy.y);
             j++;
+            quad[quad_num].blocknums.push_back(i+1); /// here we get the seg fault
             } 
     }
 
