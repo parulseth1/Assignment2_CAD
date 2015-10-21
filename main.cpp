@@ -98,7 +98,7 @@ int main(int argc, const char * argv[]) {
     // from here.
      // get this from parser because we wont need any other value for this
                         // jus the initial value.
-    int HPWL = CalculateHPWL(&Nets, Blocks, numNets);
+    
     
     //to here
     
@@ -107,7 +107,8 @@ int main(int argc, const char * argv[]) {
     //UMFPACK STUFF
     int* x = NULL;
     int dim = 6;
-    int b[] = {0, 0, 0, 0, 0,0};
+    int bx[] = {0, 0, 0, 0, 0,0};
+    int by[] = {0, 0, 0, 0, 0,0};
     int** A = NULL;
     A = new int* [dim];
     for (int i =0; i < dim; i++){
@@ -119,6 +120,11 @@ int main(int argc, const char * argv[]) {
             A[i][j] = LeftMatrix[i][j];
         }
     }
+    for(int i= 0; i<dim; i++){
+        bx[i] = RightMatrix_X[i];
+        by[i] = RightMatrix_Y[i];
+    }
+    
     
 //    A[0][0] = 2;
 //    A[0][1] = 3;
@@ -134,8 +140,14 @@ int main(int argc, const char * argv[]) {
 //    A[4][4] = 1;
     
     int* y = NULL;
-    doSolve(A, dim, &x, b);
-    doSolve(A, dim, &y, b);
+    doSolve(A, dim, &x, bx);
+    doSolve(A, dim, &y, by);
+    
+    for(int i =0; i<dim; i++){
+        cout<<"x"<<i<<":"<<x[i]<<endl;
+    }
+    
+    int HPWL = CalculateHPWL(&Nets, Blocks, numNets);
     int weight_quad;
     int j =0;
     for(int h = 0; h< Blocks.size(); h++){
