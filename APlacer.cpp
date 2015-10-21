@@ -190,12 +190,12 @@ int CalculateHPWL(Net** net, vector<block> Blocks, int NumOfNets){
     return hpwl;
 }
 
-point getCentroid(vector<block> Blocks){
+point getCentroid(vector<block> Blocks,int num){
     point centroid;
     point points;
     centroid.x = 0;
     centroid.y = 0;
-    int num = Blocks.size();
+    //int num = 10; //Blocks.size();
  for(int a = 0; a<num; a++){
     points.x = Blocks[a].getx();
     points.y = Blocks[a].gety();
@@ -228,8 +228,8 @@ point getDummyPin(quadrant quad){
     return dummy;
 }
 
-vector<quadrant> spreading(vector<block> Block, point centroid, int size_quad){
-    vector<quadrant> quads;
+quadrant* spreading(vector<block> Block, point centroid, int size_quad){
+    quadrant quads[4];
         for(int a=0; a<4; a++){
             quads[a].quad_num = a+1;
             quads[a].size = size_quad/2;
