@@ -17,9 +17,9 @@ class block{
 private:
     int blockNum;
     vector<int> netnum;
-    int x, y;
+    double x, y;
     bool fixed;
-    int totalWeight=0;
+    double totalWeight=0;
 public:
     void setBlockNum(int _blockNum){
         blockNum = _blockNum;
@@ -30,16 +30,16 @@ public:
     vector<int>* getNetNum(){
         return &netnum;
     }
-    void setx(int _x){
+    void setx(double _x){
         x = _x;
     }
-    int getx(){
+    double getx(){
         return x;
     }
-    void sety(int _y){
+    void sety(double _y){
         y = _y;
     }
-    int gety(){
+    double gety(){
         return y;
     }
     
@@ -56,11 +56,11 @@ public:
     void setFixed(bool _fixed){
         fixed = _fixed;
     }
-    void AddTotalWeight(int weight){
+    void AddTotalWeight(double weight){
         totalWeight = totalWeight + weight;
     }
     
-    int getTotalWeight(){ 
+    double getTotalWeight(){ 
         return totalWeight;
     }
 };
@@ -97,12 +97,12 @@ public:
 
 struct WeightandPin{
     int blocknum;
-    int weight;
+    double weight;
 };
 
 struct point{
-    int x;
-    int y;
+    double x;
+    double y;
 };
 
 struct quadrant{
@@ -110,7 +110,7 @@ struct quadrant{
     int quad_num;
     vector<int> blocknums;
     int size;
-    int weight;
+    double weight;
 };
 
 #endif	/* PLACER_H */

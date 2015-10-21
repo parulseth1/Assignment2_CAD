@@ -15,7 +15,7 @@
 #include "APlacer.h"
 #include "graphics.h"
 #include "Drawing.h"
-#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct1.txt"
+#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct2.txt"
 using namespace::std;
 
 int main(int argc, const char * argv[]) {
@@ -39,53 +39,56 @@ int main(int argc, const char * argv[]) {
     
     ///Parul's work starts here
     
-    vector<vector<int> > AllWeights; /// gave some error here when i had not put space between the
+    vector<vector<double>> AllWeights; /// gave some error here when i had not put space between the
                                       // >> therefore had to put space. please check
     
     
     // setting total weights for all the blocks.// this is an initial step.// after this
     // we would just add the weights of the dummy nets we create in order to spread.
     for(int a = 0; a< Blocks.size(); a++){   /// check if dot or arrow
-        int tot_weight = setTotalWeight(Blocks[a],&Nets);
+        double tot_weight = setTotalWeight(Blocks[a],&Nets);
         Blocks[a].AddTotalWeight(tot_weight);
     }
     cout<<"weights set"<<endl;
     // now to to make the matrix.
+    int numOfFixed =0;
     int numOfBlocks = Blocks.size(); // not getting set..
+    for(int h = 0; h< Blocks.size(); h++){
+        if(Blocks[h].getFixed()!= true){
+            numOfFixed++;
+        }
+    }
     for (int a =0; a<numOfBlocks;a++){
         cout<<a<<endl;
-        vector<int> Weights = getCorrespondingWeights(Blocks[a], &Nets, a+1, numOfBlocks);
+        vector<double> Weights = getCorrespondingWeights(Blocks[a], &Nets, a+1, numOfBlocks);
         AllWeights.push_back(Weights);
-        for(int b =0; b<numOfBlocks; b++){
-            cout<<Weights[b]<<endl;
-        }
-        cout<<endl;
+        
     }
-    vector<vector<int>> LeftMatrix;
-    vector<int> RightMatrix_X;
-    vector<int> RightMatrix_Y;
+    vector<vector<double>> LeftMatrix;
+    vector<double> RightMatrix_X;
+    vector<double> RightMatrix_Y;
     GetLeftMatrix(AllWeights, Blocks, &LeftMatrix, numOfBlocks);
     ForXGetRightMatrix(AllWeights, Blocks, &RightMatrix_X, numOfBlocks);
     ForYGetRightMatrix(AllWeights, Blocks, &RightMatrix_Y, numOfBlocks);
     cout<<"Left Matrix"<<endl;
-    for(int a1 = 0; a1 < LeftMatrix.size(); a1++){
-        for (int a2 = 0; a2 < LeftMatrix[a1].size(); a2++) {
-            cout << LeftMatrix[a1][a2]<<"::";
-
-        }
-        cout<<endl;
-    }
-    cout<<endl<<"for x"<<endl;
-    for(int a1 = 0; a1 < RightMatrix_X.size(); a1++){
-            cout << RightMatrix_X[a1]<<"::";
-    
-    }
-    cout<<endl<<"for Y"<<endl;
-      for(int a1 = 0; a1 < RightMatrix_Y.size(); a1++){
-            cout << RightMatrix_Y[a1]<<"::";
-
-    }
-    cout<<endl;
+//    for(int a1 = 0; a1 < LeftMatrix.size(); a1++){
+//        for (int a2 = 0; a2 < LeftMatrix[a1].size(); a2++) {
+//            cout << LeftMatrix[a1][a2]<<"::";
+//
+//        }
+//        cout<<endl;
+//    }
+//    cout<<endl<<"for x"<<endl;
+//    for(int a1 = 0; a1 < RightMatrix_X.size(); a1++){
+//            cout << RightMatrix_X[a1]<<"::";
+//    
+//    }
+//    cout<<endl<<"for Y"<<endl;
+//      for(int a1 = 0; a1 < RightMatrix_Y.size(); a1++){
+//            cout << RightMatrix_Y[a1]<<"::";
+//
+//    }
+//    cout<<endl;
     
     
     
@@ -106,7 +109,7 @@ int main(int argc, const char * argv[]) {
     
     //UMFPACK STUFF
     double* x = NULL;
-    int dim = 6;
+    int dim = numOfFixed;
     double bx[] = {0, 0, 0, 0, 0,0};
     double by[] = {0, 0, 0, 0, 0,0};
     int** A = NULL;
@@ -143,11 +146,12 @@ int main(int argc, const char * argv[]) {
     doSolve(A, dim, &x, bx);
     doSolve(A, dim, &y, by);
     
+    
     for(int i =0; i<dim; i++){
-        cout<<"x"<<i<<":"<<x[i]<<endl;
+        cout<<"x"<<i<<":"<<x[i]<<":y: "<<y[i]<<endl;
     }
     
-    int HPWL = CalculateHPWL(&Nets, Blocks, numNets);
+    double HPWL = CalculateHPWL(&Nets, Blocks, numNets);
 
     int weight_quad;
     int j =0;
@@ -160,28 +164,76 @@ int main(int argc, const char * argv[]) {
     }
     j =0;
     point centroid = getCentroid(Blocks, numOfBlocks);
-    quadrant* quad = MakeQuads(Blocks, 100, 2);
+    cout<<"centroid:"<<centroid.x<<"::"<<centroid.y<<endl;
+    quadrant* quad = new quadrant[4];
+    MakeQuads(Blocks, 100, .15, &quad);
     cout<<"got the quadrants"<<endl;
     for(int i =0; i<numOfBlocks; i++){
         if(Blocks[i].getFixed()!= true){
             cout<<i<<endl;
             int quad_num = PutBoxInQuads(Blocks[i], centroid);
             Blocks[i].AddTotalWeight(quad[quad_num].weight);
+            //cout<<"rightmatrix steps"<<RightMatrix_X[j]<<"::"<<RightMatrix_Y[j]<<endl;
             RightMatrix_X[j] = RightMatrix_X[j]+(quad[quad_num].weight * quad[quad_num].dummy.x);
             RightMatrix_Y[j] = RightMatrix_Y[j]+(quad[quad_num].weight * quad[quad_num].dummy.y);
+            cout<<"rightmatrix steps"<<RightMatrix_X[j]<<"::"<<RightMatrix_Y[j]<<"::"<<quad_num<<endl;
             j++;
             quad[quad_num].blocknums.push_back(i+1); /// here we get the seg fault
             } 
     }
 
 
-    
+    AllWeights.clear();
     for (int a =0; a<numOfBlocks;a++){
-        vector<int> Weights = getCorrespondingWeights(Blocks[a], &Nets, a, numOfBlocks);
-        AllWeights.push_back(Weights);
+        vector<double> Weights = getCorrespondingWeights(Blocks[a], &Nets, a+1, numOfBlocks);
+        AllWeights.push_back(Weights);        
     }
     //vector<vector<int> > LeftMatrix;
+    LeftMatrix.clear();
+    
     GetLeftMatrix(AllWeights, Blocks, &LeftMatrix, numOfBlocks);
+
+    cout<<endl<<"for x"<<endl;
+    for(int a1 = 0; a1 < RightMatrix_X.size(); a1++){
+            cout << RightMatrix_X[a1]<<"::";
+    
+    }
+    cout<<endl<<"for Y"<<endl;
+      for(int a1 = 0; a1 < RightMatrix_Y.size(); a1++){
+            cout << RightMatrix_Y[a1]<<"::";
+
+    }
+    cout<<endl;
+    
+    double* x_after = NULL;
+    int dim_after = numOfFixed;
+    double bx_after[] = {0, 0, 0, 0, 0,0};
+    double by_after[] = {0, 0, 0, 0, 0,0};
+    int** A_after = NULL;
+    A_after = new int* [dim_after];
+    for (int i =0; i < dim_after; i++){
+        A_after[i] = new int[dim_after];
+    }
+    
+    for (int i = 0; i < dim_after; i++){
+        for (int j = 0; j < dim_after; j++){
+            A_after[i][j] = (LeftMatrix[i][j])*100;
+        }
+    }
+    for(int i= 0; i<dim_after; i++){
+        bx_after[i] = (RightMatrix_X[i])*100;
+        by_after[i] = (RightMatrix_Y[i])*100;
+    }
+     
+    double* y_after = NULL;
+    doSolve(A_after, dim_after, &x_after, bx_after);
+    doSolve(A_after, dim_after, &y_after, by_after);
+    
+    cout<<"after apreading"<<endl;
+    for(int i =0; i<dim; i++){
+        cout<<"x"<<i<<":"<<x_after[i]<<":y: "<<y_after[i]<<endl;
+    }
+    
     
     DrawOnScreen();
     

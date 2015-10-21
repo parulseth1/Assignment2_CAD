@@ -12,15 +12,15 @@
 #include <vector>
 #include "Placer.h"
 
-int setTotalWeight(block, Net**);
-vector<int> getCorrespondingWeights(block, Net**, int,int);
-void GetLeftMatrix(vector<vector<int> >, vector<block>,vector<vector<int> >*,int);
-void ForXGetRightMatrix(vector<vector<int> > , vector<block>, vector<int>* , int);
-void ForYGetRightMatrix(vector<vector<int> > , vector<block>, vector<int>* , int);
-int CalculateHPWL(Net**, vector<block>, int);
+double setTotalWeight(block, Net**);
+vector<double> getCorrespondingWeights(block, Net**, int,int);
+void GetLeftMatrix(vector<vector<double>>, vector<block>,vector<vector<double>>*,int);
+void ForXGetRightMatrix(vector<vector<double>> , vector<block>, vector<double>* , int);
+void ForYGetRightMatrix(vector<vector<double>> , vector<block>, vector<double>* , int);
+double CalculateHPWL(Net**, vector<block>, int);
 point getCentroid(vector<block>, int);
 int PutBoxInQuads(block, point);
-quadrant* MakeQuads(vector<block>, int, int);
+void MakeQuads(vector<block>, int, double, quadrant**);
 
 
 #endif	/* APLACER_H */

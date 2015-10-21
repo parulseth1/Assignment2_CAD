@@ -12,13 +12,13 @@
 #include "Placer.h"
 
 // have to get the weights put in for each block using the nets it is connected to.
-int setTotalWeight(block Block1, Net** nets){ // some issue here. got to fix it
+double setTotalWeight(block Block1, Net** nets){ // some issue here. got to fix it
     vector<int>* net = Block1.getNetNum();
-    int weight = 0;
+    double weight = 0;
     //int Netweight
     for(int a =0; a< net->size(); a++){  // dont know if we have to use dot or arrow.
         int numpins = (*nets)[((*net)[a]-1)].getNumPins();
-        int Netweight = (*nets)[((*net)[a]-1)].getPinWeight() * (numpins-1);
+        double Netweight = (*nets)[((*net)[a]-1)].getPinWeight() * (numpins-1);
         weight = weight + Netweight; 
         
     }
@@ -27,13 +27,13 @@ int setTotalWeight(block Block1, Net** nets){ // some issue here. got to fix it
     
 }
 
-vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, int TotalNumOfPin ){
+vector<double> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, int TotalNumOfPin ){
     vector<int>* net = Block1.getNetNum();
-    vector<int> weights(TotalNumOfPin);
+    vector<double> weights(TotalNumOfPin);
     //vector<WeightandPin> w1;
     vector<WeightandPin> w1(TotalNumOfPin);
     WeightandPin w;
-    int total = Block1.getTotalWeight();
+    double total = Block1.getTotalWeight();
     cout<<"total weight:: "<<total<<endl;
     for(int a = 0; a< net->size(); a++){  // arrow or dot
 
@@ -43,6 +43,7 @@ vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, i
             w.blocknum = blocknums->at(b);
             
             w.weight = ((*nets)[((*net)[a]-1)].getPinWeight());
+            
             w.weight = -w.weight;
             //cout<<w.weight<<endl;
             
@@ -69,7 +70,7 @@ vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, i
         } 
         
     }
-    cout<<"we got the corresponding weights"<<endl;
+    //cout<<"we got the corresponding weights"<<endl;
     for(int e =0; e< TotalNumOfPin; e++){
         int counter =0;
         for(int f = 0; f< w1.size(); f++){
@@ -87,9 +88,9 @@ vector<int> getCorrespondingWeights(block Block1, Net** nets, int blocknumber, i
 }
 
 
-void GetLeftMatrix(vector<vector<int> > weights, vector<block> Blocks, vector<vector<int> >* LeftMatrix, int numOfBlocks){
-    vector<int> weight;
-    vector<int> row(numOfBlocks);
+void GetLeftMatrix(vector<vector<double>> weights, vector<block> Blocks, vector<vector<double>>* LeftMatrix, int numOfBlocks){
+    vector<double> weight;
+    vector<double> row(numOfBlocks);
     for(int a =0; a< numOfBlocks; a++){
         //int counter = 0;
         if(Blocks[a].getFixed() != true){
@@ -97,12 +98,12 @@ void GetLeftMatrix(vector<vector<int> > weights, vector<block> Blocks, vector<ve
             for(int b=0; b< numOfBlocks; b++){
                 if(Blocks[b].getFixed() != true){
                     row.push_back(weight[b]);
-                    cout<<weight[b]<<endl;
+                    //cout<<weight[b]<<endl;
                     //counter++;
                 }
             }
-            cout<<endl;
-            cout<<"RowSizefrom get left matrix"<<row.size()<<endl;
+            //cout<<endl;
+            //cout<<"RowSizefrom get left matrix"<<row.size()<<endl;
             LeftMatrix->push_back(row);
         }
         
@@ -111,16 +112,16 @@ void GetLeftMatrix(vector<vector<int> > weights, vector<block> Blocks, vector<ve
     
 }
 
-void ForXGetRightMatrix(vector<vector<int>> weights, vector<block> Blocks, vector<int>* RightMatrix, int numOfBlocks){
-   vector<int> weight;
+void ForXGetRightMatrix(vector<vector<double>> weights, vector<block> Blocks, vector<double>* RightMatrix, int numOfBlocks){
+   vector<double> weight;
     //int row =0;
     for(int a =0; a< numOfBlocks; a++){
         if(Blocks[a].getFixed() != true){
             weight = weights[a];
-            int row = 0;
+            double row = 0;
             for(int b=0; b< numOfBlocks; b++){
                 if(Blocks[b].getFixed() == true){
-                    int x = Blocks[b].getx();
+                    double x = Blocks[b].getx();
                     row = row - (weight[b]*x);
                 }
             }
@@ -132,19 +133,19 @@ void ForXGetRightMatrix(vector<vector<int>> weights, vector<block> Blocks, vecto
 }
 
 
-void ForYGetRightMatrix(vector<vector<int>> weights, vector<block> Blocks, vector<int>* RightMatrix, int numOfBlocks){
-   vector<int> weight;
+void ForYGetRightMatrix(vector<vector<double>> weights, vector<block> Blocks, vector<double>* RightMatrix, int numOfBlocks){
+   vector<double> weight;
     //int row =0;
     for(int a =0; a< numOfBlocks; a++){
         if(Blocks[a].getFixed() != true){
             weight = weights[a];
-            int row = 0;
+            double row = 0;
             cout<<Blocks[a].getBlockNum()<<endl;
             for(int b=0; b< numOfBlocks; b++){
                 if(Blocks[b].getFixed() == true){
-                    int x = Blocks[b].gety();
+                    double x = Blocks[b].gety();
                     row = row - (weight[b]*x);
-                    cout<<"weight at"<<b+1<<":"<<weight[b]<<endl;
+                    //cout<<"weight at"<<b+1<<":"<<weight[b]<<endl;
                 }
             }
             RightMatrix->push_back(row);
@@ -156,18 +157,18 @@ void ForYGetRightMatrix(vector<vector<int>> weights, vector<block> Blocks, vecto
   
     
 
-int CalculateHPWL(Net** net, vector<block> Blocks, int NumOfNets){
-    int hpwl =0;
+double CalculateHPWL(Net** net, vector<block> Blocks, int NumOfNets){
+    double hpwl =0;
     for (int a = 0; a < NumOfNets;a++){
         vector<int>* blocknums = (*net)[a].getBlockNums();
-        int xMax = 0;
-        int yMax = 0;
-        int xMin = 100;
-        int yMin = 100;
-        int delx; int dely;
+        double xMax = 0;
+        double yMax = 0;
+        double xMin = 100;
+        double yMin = 100;
+        double delx; double dely;
         for(int b = 0; b< blocknums->size(); b++){
-            int x = Blocks[b].getx();
-            int y = Blocks[b].gety();
+            double x = Blocks[b].getx();
+            double y = Blocks[b].gety();
             if(x < xMin){
                 xMin = x;
             }
@@ -195,7 +196,34 @@ point getCentroid(vector<block> Blocks,int num){
     point points;
     centroid.x = 0;
     centroid.y = 0;
+    //int count =0;
     //int num = 10; //Blocks.size();
+//           double xMax = 0;
+//        double yMax = 0;
+//        double xMin = 100;
+//        double yMin = 100;
+//        double delx; double dely;
+//        for(int b = 0; b< num; b++){
+//            double x = Blocks[b].getx();
+//            double y = Blocks[b].gety();
+//            if(x < xMin){
+//                xMin = x;
+//            }
+//            if(x> xMax){
+//                xMax = x;
+//            }
+//            
+//            if(y < yMin){
+//                yMin = y;
+//            }
+//            if(y> yMax){
+//                yMax = y;
+//            }
+//            
+//        }
+//        centroid.x = (xMax - xMin)/2;
+//        centroid.y = (yMax - yMin)/2;
+        
  for(int a = 0; a<num; a++){
     points.x = Blocks[a].getx();
     points.y = Blocks[a].gety();
@@ -208,12 +236,12 @@ point getCentroid(vector<block> Blocks,int num){
 }
 
 
-quadrant* MakeQuads(vector<block> Block, int size_quad, int weight){
-    quadrant quads[4];
+void MakeQuads(vector<block> Block, int size_quad, double weight, quadrant** quads){
+    //quadrant quads[4];
     point dummy;
         for(int a=0; a<4; a++){
-            quads[a].quad_num = a+1;
-            quads[a].size = size_quad/2;
+            (*quads)[a].quad_num = a+1;
+            (*quads)[a].size = size_quad/2;
             if(a == 0){
                 dummy.x = (size_quad)/2;
                 dummy.y = (size_quad/2) + size_quad;   
@@ -230,16 +258,16 @@ quadrant* MakeQuads(vector<block> Block, int size_quad, int weight){
                 dummy.x = (size_quad/2) + size_quad;
                 dummy.y = (size_quad/2) + size_quad;   
             }
-            quads[a].dummy = dummy;
-            quads[a].weight = weight;
+            (*quads)[a].dummy = dummy;
+            (*quads)[a].weight = weight;
             
         }
-    return quads;
+   
 }
 int PutBoxInQuads(block Block, point centroid){
    
-    int x = Block.getx();
-    int y = Block.gety();
+    double x = Block.getx();
+    double y = Block.gety();
     int quad_num;
     if(x< centroid.x){
         if( y < centroid.y){ // quad 3
