@@ -156,6 +156,7 @@ int main(int argc, const char * argv[]) {
     }
     
     double HPWL = CalculateHPWL(&Nets, Blocks, numNets);
+   
 
     int weight_quad;
     int j =0;
@@ -238,9 +239,14 @@ int main(int argc, const char * argv[]) {
         cout<<"x"<<i<<":"<<x_after[i]<<":y: "<<y_after[i]<<endl;
     }
     
+    double HPWL_after = CalculateHPWL(&Nets, Blocks, numNets);
+    
+    cout<<"hpwl before: "<<HPWL<<" hpwl after:"<<HPWL_after<<endl;
+    
     LoadBlocks(x,y,numOfBlocks,100);
     LoadRatsNest(Nets, numNets);
     DrawOnScreen();
+    
     
     if (Nets){
         delete[] Nets;
