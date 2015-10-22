@@ -15,7 +15,7 @@
 #include "APlacer.h"
 #include "graphics.h"
 #include "Drawing.h"
-#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct3.txt"
+#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct2.txt"
 using namespace::std;
 
 int main(int argc, const char * argv[]) {
@@ -27,7 +27,7 @@ int main(int argc, const char * argv[]) {
     cout<<"Parsing Complete"<<endl;
     cout<<"number of nets: "<<numNets<<endl;
 
-    for (int i = 0; i < 17; i++){
+    for (int i = 0; i < numNets; i++){
         cout<<Nets[i].getNumPins()<<"::"<<Nets[i].getPinWeight()<<endl;
     }
     
@@ -62,6 +62,7 @@ int main(int argc, const char * argv[]) {
         cout<<a<<endl;
         vector<double> Weights = getCorrespondingWeights(Blocks[a], &Nets, a+1, numOfBlocks);
         AllWeights.push_back(Weights);
+        cout<<"w:"<<Weights[0]<<"::"<<Weights[1]<<endl;
         
     }
     vector<vector<double>> LeftMatrix;
@@ -71,8 +72,8 @@ int main(int argc, const char * argv[]) {
     ForXGetRightMatrix(AllWeights, Blocks, &RightMatrix_X, numOfBlocks);
     ForYGetRightMatrix(AllWeights, Blocks, &RightMatrix_Y, numOfBlocks);
     cout<<"Left Matrix"<<endl;
-    for(int a1 = 0; a1 < LeftMatrix.size(); a1++){
-        for (int a2 = 0; a2 < LeftMatrix[a1].size(); a2++) {
+    for(int a1 = 0; a1 < 10; a1++){
+        for (int a2 = 0; a2 < 10; a2++) {
             cout << LeftMatrix[a1][a2]<<"::";
 
         }
