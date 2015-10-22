@@ -21,8 +21,8 @@ int LoadBlocks (double* _x, double* _y, int _blockCnt, int _gridSize) {
     gridSize = _gridSize;
     
     for (int i = 0; i < blockCnt; i++){
-        x[i] = x[i]/10;
-        y[i] = y[i]/10;
+        x[i] = x[i]/10.0;
+        y[i] = y[i]/10.0;
     }
 }
 
