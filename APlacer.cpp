@@ -39,15 +39,9 @@ vector<double> getCorrespondingWeights(block Block1, Net** nets, int blocknumber
 
         vector<int>* blocknums = (*nets)[((*net)[a]-1)].getBlockNums();
         for(int b = 0; b<blocknums->size(); b++){ //arrow or dot
-            
             w.blocknum = blocknums->at(b);
-            
             w.weight = ((*nets)[((*net)[a]-1)].getPinWeight());
-            
             w.weight = -w.weight;
-            //cout<<w.weight<<endl;
-            
-            
             int count = 0;
             for(int c = 0; c< w1.size(); c++){
                 if(w.blocknum == w1[c].blocknum){

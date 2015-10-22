@@ -114,8 +114,8 @@ int main(int argc, const char * argv[]) {
     //UMFPACK STUFF
     double* x = NULL;
     int dim = numOfFixed;
-    double bx[] = {0, 0, 0, 0, 0,0};
-    double by[] = {0, 0, 0, 0, 0,0};
+    double* bx = new double[dim];
+    double* by = new double[dim];
     double** A = NULL;
     A = new double* [dim];
     for (int i =0; i < dim; i++){
