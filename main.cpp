@@ -16,6 +16,7 @@
 #include "graphics.h"
 #include "Drawing.h"
 #define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct2.txt"
+
 using namespace::std;
 
 int main(int argc, const char * argv[]) {
@@ -28,7 +29,8 @@ int main(int argc, const char * argv[]) {
     cout<<"number of nets: "<<numNets<<endl;
 
     for (int i = 0; i < numNets; i++){
-        cout<<Nets[i].getNumPins()<<"::"<<Nets[i].getPinWeight()<<endl;
+
+        cout<<i<<"::"<<Nets[i].getNumPins()<<"::"<<Nets[i].getPinWeight()<<endl;
     }
     
     
@@ -64,6 +66,7 @@ int main(int argc, const char * argv[]) {
         AllWeights.push_back(Weights);
         cout<<"w:"<<Weights[0]<<"::"<<Weights[1]<<endl;
         
+
     }
     vector<vector<double>> LeftMatrix;
     vector<double> RightMatrix_X;
@@ -230,7 +233,7 @@ int main(int argc, const char * argv[]) {
     doSolve(A_after, dim_after, &x_after, bx_after);
     doSolve(A_after, dim_after, &y_after, by_after);
     
-    cout<<"after apreading"<<endl;
+    cout<<"after spreading"<<endl;
     for(int i =0; i<dim; i++){
         cout<<"x"<<i<<":"<<x_after[i]<<":y: "<<y_after[i]<<endl;
     }
