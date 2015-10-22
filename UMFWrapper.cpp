@@ -16,7 +16,7 @@ using namespace::std;
 
 #define DEBUGUMF;
 
-int doSolve(int** A, int dim, double** x, double* b){
+int doSolve(double** A, int dim, double** x, double* b){
     //A is a square matrix
     //from A we first have to create the matrixes Ti, Tj and Tx
     //first get the number non zero elements, nz

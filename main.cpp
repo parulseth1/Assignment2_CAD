@@ -116,10 +116,10 @@ int main(int argc, const char * argv[]) {
     int dim = numOfFixed;
     double bx[] = {0, 0, 0, 0, 0,0};
     double by[] = {0, 0, 0, 0, 0,0};
-    int** A = NULL;
-    A = new int* [dim];
+    double** A = NULL;
+    A = new double* [dim];
     for (int i =0; i < dim; i++){
-        A[i] = new int[dim];
+        A[i] = new double[dim];
     }
     
     for (int i = 0; i < dim; i++){
@@ -213,15 +213,15 @@ int main(int argc, const char * argv[]) {
     int dim_after = numOfFixed;
     double* bx_after = new double[dim_after];
     double* by_after = new double[dim_after];
-    int** A_after = NULL;
-    A_after = new int* [dim_after];
+    double** A_after = NULL;
+    A_after = new double* [dim_after];
     for (int i =0; i < dim_after; i++){
-        A_after[i] = new int[dim_after];
+        A_after[i] = new double[dim_after];
     }
     
     for (int i = 0; i < dim_after; i++){
         for (int j = 0; j < dim_after; j++){
-            A_after[i][j] = (LeftMatrix[i][j])*10000;
+            A_after[i][j] = (LeftMatrix[i][j]);
         }
     }
     for(int i= 0; i<dim_after; i++){
