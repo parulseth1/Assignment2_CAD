@@ -11,6 +11,6 @@
 
 #include <stdio.h>
 
-int doSolve(int** A, int dim, double** x, double* b);
+int doSolve(double** A, int dim, double** x, double* b);
 
 #endif /* defined(__UMFPackWrapper__UMFWrapper__) */
