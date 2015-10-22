@@ -77,7 +77,8 @@ public:
     void incrementNumPins(){
         numPins++;
         if (numPins != 0){
-            weight = 2/numPins;
+            weight = 2.0/numPins;
+            
         }
     }
     void setNumPins(int _numPins){
@@ -86,7 +87,7 @@ public:
     int getNumPins(){
         return numPins;
     }
-    int getPinWeight(){
+    double getPinWeight(){
         return weight;
     }
     vector<int>* getBlockNums(){

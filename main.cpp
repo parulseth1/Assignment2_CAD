@@ -15,7 +15,7 @@
 #include "APlacer.h"
 #include "graphics.h"
 #include "Drawing.h"
-#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct2.txt"
+#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct3.txt"
 using namespace::std;
 
 int main(int argc, const char * argv[]) {
@@ -71,24 +71,24 @@ int main(int argc, const char * argv[]) {
     ForXGetRightMatrix(AllWeights, Blocks, &RightMatrix_X, numOfBlocks);
     ForYGetRightMatrix(AllWeights, Blocks, &RightMatrix_Y, numOfBlocks);
     cout<<"Left Matrix"<<endl;
-//    for(int a1 = 0; a1 < LeftMatrix.size(); a1++){
-//        for (int a2 = 0; a2 < LeftMatrix[a1].size(); a2++) {
-//            cout << LeftMatrix[a1][a2]<<"::";
-//
-//        }
-//        cout<<endl;
-//    }
-//    cout<<endl<<"for x"<<endl;
-//    for(int a1 = 0; a1 < RightMatrix_X.size(); a1++){
-//            cout << RightMatrix_X[a1]<<"::";
-//    
-//    }
-//    cout<<endl<<"for Y"<<endl;
-//      for(int a1 = 0; a1 < RightMatrix_Y.size(); a1++){
-//            cout << RightMatrix_Y[a1]<<"::";
-//
-//    }
-//    cout<<endl;
+    for(int a1 = 0; a1 < LeftMatrix.size(); a1++){
+        for (int a2 = 0; a2 < LeftMatrix[a1].size(); a2++) {
+            cout << LeftMatrix[a1][a2]<<"::";
+
+        }
+        cout<<endl;
+    }
+    cout<<endl<<"for x"<<endl;
+    for(int a1 = 0; a1 < RightMatrix_X.size(); a1++){
+            cout << RightMatrix_X[a1]<<"::";
+    
+    }
+    cout<<endl<<"for Y"<<endl;
+      for(int a1 = 0; a1 < RightMatrix_Y.size(); a1++){
+            cout << RightMatrix_Y[a1]<<"::";
+
+    }
+    cout<<endl;
     
     
     
@@ -166,7 +166,7 @@ int main(int argc, const char * argv[]) {
     point centroid = getCentroid(Blocks, numOfBlocks);
     cout<<"centroid:"<<centroid.x<<"::"<<centroid.y<<endl;
     quadrant* quad = new quadrant[4];
-    MakeQuads(Blocks, 100, .15, &quad);
+    MakeQuads(Blocks, 100, .08, &quad);
     cout<<"got the quadrants"<<endl;
     for(int i =0; i<numOfBlocks; i++){
         if(Blocks[i].getFixed()!= true){
@@ -207,8 +207,8 @@ int main(int argc, const char * argv[]) {
     
     double* x_after = NULL;
     int dim_after = numOfFixed;
-    double bx_after[] = {0, 0, 0, 0, 0,0};
-    double by_after[] = {0, 0, 0, 0, 0,0};
+    double* bx_after = new double[dim_after];
+    double* by_after = new double[dim_after];
     int** A_after = NULL;
     A_after = new int* [dim_after];
     for (int i =0; i < dim_after; i++){
@@ -217,12 +217,12 @@ int main(int argc, const char * argv[]) {
     
     for (int i = 0; i < dim_after; i++){
         for (int j = 0; j < dim_after; j++){
-            A_after[i][j] = (LeftMatrix[i][j])*100;
+            A_after[i][j] = (LeftMatrix[i][j])*10000;
         }
     }
     for(int i= 0; i<dim_after; i++){
-        bx_after[i] = (RightMatrix_X[i])*100;
-        by_after[i] = (RightMatrix_Y[i])*100;
+        bx_after[i] = (RightMatrix_X[i])*10000;
+        by_after[i] = (RightMatrix_Y[i])*10000;
     }
      
     double* y_after = NULL;
