@@ -21,6 +21,7 @@ using namespace::std;
 
 int main(int argc, const char * argv[]) {
     vector<block> Blocks;
+    vector<block> Blocks1;
     Net* Nets = NULL;
     int numNets = 0;
     doParse(FILENAME, &Blocks, &Nets, &numNets);
@@ -32,21 +33,8 @@ int main(int argc, const char * argv[]) {
 
         cout<<i<<"::"<<Nets[i].getNumPins()<<"::"<<Nets[i].getPinWeight()<<endl;
     }
-    
-    
-    
-    
-    
-    
-    
-    ///Parul's work starts here
-    
+
     vector<vector<double>> AllWeights; /// gave some error here when i had not put space between the
-                                      // >> therefore had to put space. please check
-    
-    
-    // setting total weights for all the blocks.// this is an initial step.// after this
-    // we would just add the weights of the dummy nets we create in order to spread.
     for(int a = 0; a< Blocks.size(); a++){   /// check if dot or arrow
         double tot_weight = setTotalWeight(Blocks[a],&Nets);
         Blocks[a].AddTotalWeight(tot_weight);
@@ -74,43 +62,7 @@ int main(int argc, const char * argv[]) {
     GetLeftMatrix(AllWeights, Blocks, &LeftMatrix, numOfBlocks);
     ForXGetRightMatrix(AllWeights, Blocks, &RightMatrix_X, numOfBlocks);
     ForYGetRightMatrix(AllWeights, Blocks, &RightMatrix_Y, numOfBlocks);
-    cout<<"Left Matrix"<<endl;
-    for(int a1 = 0; a1 < 10; a1++){
-        for (int a2 = 0; a2 < 10; a2++) {
-            cout << LeftMatrix[a1][a2]<<"::";
 
-        }
-        cout<<endl;
-    }
-    cout<<endl<<"for x"<<endl;
-    for(int a1 = 0; a1 < RightMatrix_X.size(); a1++){
-            cout << RightMatrix_X[a1]<<"::";
-    
-    }
-    cout<<endl<<"for Y"<<endl;
-      for(int a1 = 0; a1 < RightMatrix_Y.size(); a1++){
-            cout << RightMatrix_Y[a1]<<"::";
-
-    }
-    cout<<endl;
-    
-    
-    
-    
-    
-    /// parul's work ends here
-    
-    
-    // put this after the umfpack stuff
-    // from here.
-     // get this from parser because we wont need any other value for this
-                        // jus the initial value.
-    
-    
-    //to here
-    
-    
-    
     //UMFPACK STUFF
     double* x = NULL;
     int dim = numOfFixed;
@@ -133,19 +85,6 @@ int main(int argc, const char * argv[]) {
     }
     
     
-//    A[0][0] = 2;
-//    A[0][1] = 3;
-//    A[1][0] = 3;
-//    A[1][2] = 4;
-//    A[1][4] = 6;
-//    A[2][1] = -1;
-//    A[2][2] = -3;
-//    A[2][3] = 2;
-//    A[3][2] = 1;
-//    A[4][1] = 4;
-//    A[4][2] = 2;
-//    A[4][4] = 1;
-    
     double* y = NULL;
     doSolve(A, dim, &x, bx);
     doSolve(A, dim, &y, by);
@@ -155,7 +94,7 @@ int main(int argc, const char * argv[]) {
         cout<<"x"<<i<<":"<<x[i]<<":y: "<<y[i]<<endl;
     }
     
-    double HPWL = CalculateHPWL(&Nets, Blocks, numNets);
+
    
 
     int weight_quad;
@@ -167,18 +106,25 @@ int main(int argc, const char * argv[]) {
             j++;
         }
     }
+    double HPWL = CalculateHPWL(&Nets, Blocks, numNets);
     j =0;
+    double* X = new double[numOfBlocks];
+    double* Y = new double[numOfBlocks];
+    for(int h = 0; h< Blocks.size(); h++){
+        X[h]=Blocks[h].getx();
+        Y[h]=Blocks[h].gety();
+    }
+    
     point centroid = getCentroid(Blocks, numOfBlocks);
     cout<<"centroid:"<<centroid.x<<"::"<<centroid.y<<endl;
     quadrant* quad = new quadrant[4];
-    MakeQuads(Blocks, 100, .08, &quad);
+    MakeQuads(Blocks, 100,1.5, &quad);
     cout<<"got the quadrants"<<endl;
     for(int i =0; i<numOfBlocks; i++){
         if(Blocks[i].getFixed()!= true){
             cout<<i<<endl;
             int quad_num = PutBoxInQuads(Blocks[i], centroid);
             Blocks[i].AddTotalWeight(quad[quad_num].weight);
-            //cout<<"rightmatrix steps"<<RightMatrix_X[j]<<"::"<<RightMatrix_Y[j]<<endl;
             RightMatrix_X[j] = RightMatrix_X[j]+(quad[quad_num].weight * quad[quad_num].dummy.x);
             RightMatrix_Y[j] = RightMatrix_Y[j]+(quad[quad_num].weight * quad[quad_num].dummy.y);
             cout<<"rightmatrix steps"<<RightMatrix_X[j]<<"::"<<RightMatrix_Y[j]<<"::"<<quad_num<<endl;
@@ -193,24 +139,9 @@ int main(int argc, const char * argv[]) {
         vector<double> Weights = getCorrespondingWeights(Blocks[a], &Nets, a+1, numOfBlocks);
         AllWeights.push_back(Weights);        
     }
-    //vector<vector<int> > LeftMatrix;
-    LeftMatrix.clear();
-    
-    GetLeftMatrix(AllWeights, Blocks, &LeftMatrix, numOfBlocks);
-
-    cout<<endl<<"for x"<<endl;
-    for(int a1 = 0; a1 < RightMatrix_X.size(); a1++){
-            cout << RightMatrix_X[a1]<<"::";
-    
-    }
-    cout<<endl<<"for Y"<<endl;
-      for(int a1 = 0; a1 < RightMatrix_Y.size(); a1++){
-            cout << RightMatrix_Y[a1]<<"::";
-
-    }
-    cout<<endl;
-    
+    // umfpack stuff
     double* x_after = NULL;
+    double* y_after = NULL;
     int dim_after = numOfFixed;
     double* bx_after = new double[dim_after];
     double* by_after = new double[dim_after];
@@ -226,24 +157,36 @@ int main(int argc, const char * argv[]) {
         }
     }
     for(int i= 0; i<dim_after; i++){
-        bx_after[i] = (RightMatrix_X[i])*10000;
-        by_after[i] = (RightMatrix_Y[i])*10000;
+        bx_after[i] = (RightMatrix_X[i]);
+        by_after[i] = (RightMatrix_Y[i]);
     }
-     
-    double* y_after = NULL;
+    j =0;
     doSolve(A_after, dim_after, &x_after, bx_after);
     doSolve(A_after, dim_after, &y_after, by_after);
     
-    cout<<"after spreading"<<endl;
-    for(int i =0; i<dim; i++){
-        cout<<"x"<<i<<":"<<x_after[i]<<":y: "<<y_after[i]<<endl;
+    
+    Blocks1=Blocks;
+    for(int h = 0; h< Blocks1.size(); h++){
+        if(Blocks1[h].getFixed()!= true){
+            Blocks1[h].setx(x[j]);
+            Blocks1[h].sety(y[j]);
+            j++;
+        }
     }
     
-    double HPWL_after = CalculateHPWL(&Nets, Blocks, numNets);
+    double* X_after = new double[numOfBlocks];
+    double* Y_after = new double[numOfBlocks];
+    for(int h = 0; h< Blocks1.size(); h++){
+        X_after[h]=Blocks1[h].getx();
+        Y_after[h]=Blocks1[h].gety();
+    }
+    
+    
+    double HPWL_after = CalculateHPWL(&Nets, Blocks1, numNets);
     
     cout<<"hpwl before: "<<HPWL<<" hpwl after:"<<HPWL_after<<endl;
     
-    LoadBlocks(x,y,numOfBlocks,100);
+    LoadBlocks(X,Y,numOfBlocks,10);
     LoadRatsNest(Nets, numNets);
     DrawOnScreen();
     

@@ -10,6 +10,8 @@
 #include <sstream>
 #include <fstream>
 #include "Placer.h"
+#define INTMAX 12345
+#define INTMIN -1
 
 // have to get the weights put in for each block using the nets it is connected to.
 double setTotalWeight(block Block1, Net** nets){ // some issue here. got to fix it
@@ -155,14 +157,14 @@ double CalculateHPWL(Net** net, vector<block> Blocks, int NumOfNets){
     double hpwl =0;
     for (int a = 0; a < NumOfNets;a++){
         vector<int>* blocknums = (*net)[a].getBlockNums();
-        double xMax = 0;
-        double yMax = 0;
-        double xMin = 100;
-        double yMin = 100;
+        double xMax = INTMIN;
+        double yMax = INTMIN;
+        double xMin = INTMAX;
+        double yMin = INTMAX;
         double delx; double dely;
         for(int b = 0; b< blocknums->size(); b++){
-            double x = Blocks[b].getx();
-            double y = Blocks[b].gety();
+            double x = Blocks[(*blocknums)[b]-1].getx();
+            double y = Blocks[(*blocknums)[b]-1].gety();
             if(x < xMin){
                 xMin = x;
             }
@@ -189,35 +191,7 @@ point getCentroid(vector<block> Blocks,int num){
     point centroid;
     point points;
     centroid.x = 0;
-    centroid.y = 0;
-    //int count =0;
-    //int num = 10; //Blocks.size();
-//           double xMax = 0;
-//        double yMax = 0;
-//        double xMin = 100;
-//        double yMin = 100;
-//        double delx; double dely;
-//        for(int b = 0; b< num; b++){
-//            double x = Blocks[b].getx();
-//            double y = Blocks[b].gety();
-//            if(x < xMin){
-//                xMin = x;
-//            }
-//            if(x> xMax){
-//                xMax = x;
-//            }
-//            
-//            if(y < yMin){
-//                yMin = y;
-//            }
-//            if(y> yMax){
-//                yMax = y;
-//            }
-//            
-//        }
-//        centroid.x = (xMax - xMin)/2;
-//        centroid.y = (yMax - yMin)/2;
-        
+    centroid.y = 0;   
  for(int a = 0; a<num; a++){
     points.x = Blocks[a].getx();
     points.y = Blocks[a].gety();
@@ -288,20 +262,5 @@ int PutBoxInQuads(block Block, point centroid){
 
 
 
-// then use these to find the first locations.
-// then, how to calculate Half Perimeter wire length?? finally find the total wire used..
-// next would be divide into 4 parts, and get dummy points
-// then the dummy points and other not fixed points as 2 pin nets,
-// now, add this weight to existing weights and find the new solution.
-// now get new HPWL
-// thats how we spread
-// only for the cct2 do this spread thing until a condition is met...
 
-
-// i have been able to make the basic functions for getting the matrices, setting of weights 
-// now only segregating into boxes and 
-//introducing dummy pin is left. -- done
-// but how to divide??? i am confused.             
-// i am also confused about how to get half perimeter wire length..--- DONE!!
-// always get the numofblock and numofNets // also get the initial num of nets and num of block.
 
