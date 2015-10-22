@@ -5,20 +5,25 @@ using namespace::std;
 
 void drawscreen();
 
-int* x = NULL;
-int* y = NULL;
+double* x = NULL;
+double* y = NULL;
 int gridSize = 10;
 int blockCnt = 0;
 Net* nets = NULL;
 int netCnt = 0;
 vector<block> Blocks;
 
-int LoadBlocks(int* _x, int* _y, int _blockCnt, int _gridSize) {
+int LoadBlocks (double* _x, double* _y, int _blockCnt, int _gridSize) {
 
     x = _x;
     y = _y;
     blockCnt = _blockCnt;
     gridSize = _gridSize;
+    
+    for (int i = 0; i < blockCnt; i++){
+        x[i] = x[i]/10;
+        y[i] = y[i]/10;
+    }
 }
 
 int LoadRatsNest(Net* _nets, int _netCnt) {
