@@ -5,7 +5,7 @@
 #include "Placer.h"
 #include "APlacer.h"
 
-int LoadBlocks(int*, int*, int, int);
+int LoadBlocks(double*, double*, int, int);
 int LoadRatsNest(Net*, int);
 int DrawOnScreen();
 

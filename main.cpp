@@ -238,7 +238,8 @@ int main(int argc, const char * argv[]) {
         cout<<"x"<<i<<":"<<x_after[i]<<":y: "<<y_after[i]<<endl;
     }
     
-    
+    LoadBlocks(x,y,numOfBlocks,100);
+    LoadRatsNest(Nets, numNets);
     DrawOnScreen();
     
     if (Nets){
