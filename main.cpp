@@ -114,6 +114,33 @@ int main(int argc, const char * argv[]) {
         Y[h]=Blocks[h].gety();
     }
     
+        /// trying to get simPL working.
+#ifdef Part4 
+    vector<block> Block1 = Blocks;
+    vector<vector<double>> AllWeights1 = AllWeights;
+    int min=100, max=0;
+    int interation =0;
+    while(){
+        if(iteration%2==0){               // vertical cuts
+            int num_div = 10/(iteration+1);
+            for(int n = 0; n< numOfFixed; n++){
+                if(x[n]<min && x[n]>max){
+                    min = x[n];
+                    
+                            
+                }   
+            }
+            max= min;
+        }
+        if(iteration%2 == 1){    ///horizontal cuts
+            
+        }
+    }
+        
+    
+#endif   
+    // hopefully it will work.
+    
     point centroid = getCentroid(Blocks, numOfBlocks);
     cout<<"centroid:"<<centroid.x<<"::"<<centroid.y<<endl;
     quadrant* quad = new quadrant[4];
@@ -181,21 +208,7 @@ int main(int argc, const char * argv[]) {
         Y_after[h]=Blocks1[h].gety();
     }
     
-    /// trying to get simPL working.
-#ifdef Part4 
-    vector<block> Block1 = Blocks;
-    
-    int interation =0;
-    while(){
-        int num_div = 10/(iteration+1);
-        for(int n = 0; n< numOfFixed; n++){
-            
-        
-        }
-    }
-    
-#endif   
-    // hopefully it will work.
+
     double HPWL_after = CalculateHPWL(&Nets, Blocks1, numNets);
     
     cout<<"hpwl before: "<<HPWL<<" hpwl after:"<<HPWL_after<<endl;

@@ -9,7 +9,7 @@
 #include "UMFWrapper.h"
 #include <iostream>
 extern "C" {
-#include "SuiteSparse/UMFPACK/Include/umfpack.h"
+#include "/home/parul/NetBeansProjects/AnalyticalPlacer/Include/umfpack.h"
 }
 
 using namespace::std;
