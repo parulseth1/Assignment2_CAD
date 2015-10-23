@@ -20,7 +20,7 @@ void ForYGetRightMatrix(vector<vector<double>> , vector<block>, vector<double>* 
 double CalculateHPWL(Net**, vector<block>, int);
 point getCentroid(vector<block>, int);
 int PutBoxInQuads(block, point);
-void MakeQuads(vector<block>, int, double, quadrant**);
+void MakeQuads(vector<block>,int,double, quadrant**);
 
 
 #endif	/* APLACER_H */

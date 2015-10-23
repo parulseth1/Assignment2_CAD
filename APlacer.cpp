@@ -263,4 +263,10 @@ int PutBoxInQuads(block Block, point centroid){
 
 
 
+// i have been able to make the basic functions for getting the matrices, setting of weights 
+// now only segregating into boxes and 
+//introducing dummy pin is left. -- done
+// but how to divide??? i am confused.             
+// i am also confused about how to get half perimeter wire length..--- DONE!!
+// always get the numofblock and numofNets // also get the initial num of nets and num of block.
 

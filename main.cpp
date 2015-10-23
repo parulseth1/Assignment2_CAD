@@ -15,6 +15,7 @@
 #include "APlacer.h"
 #include "graphics.h"
 #include "Drawing.h"
+//#define Part4
 #define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct2.txt"
 
 using namespace::std;
@@ -53,8 +54,6 @@ int main(int argc, const char * argv[]) {
         vector<double> Weights = getCorrespondingWeights(Blocks[a], &Nets, a+1, numOfBlocks);
         AllWeights.push_back(Weights);
         cout<<"w:"<<Weights[0]<<"::"<<Weights[1]<<endl;
-        
-
     }
     vector<vector<double>> LeftMatrix;
     vector<double> RightMatrix_X;
@@ -118,21 +117,22 @@ int main(int argc, const char * argv[]) {
     point centroid = getCentroid(Blocks, numOfBlocks);
     cout<<"centroid:"<<centroid.x<<"::"<<centroid.y<<endl;
     quadrant* quad = new quadrant[4];
-    MakeQuads(Blocks, 100,1.5, &quad);
+    vector<quadrant> quad_vector;
+    int size = 100;
+    int Q_weight = 1.5;
+    int iteration =0;
+    Q_weight = iteration*(.1)+.4;
+    MakeQuads(Blocks, size,Q_weight, &quad);
     cout<<"got the quadrants"<<endl;
-    for(int i =0; i<numOfBlocks; i++){
-        if(Blocks[i].getFixed()!= true){
-            cout<<i<<endl;
-            int quad_num = PutBoxInQuads(Blocks[i], centroid);
-            Blocks[i].AddTotalWeight(quad[quad_num].weight);
-            RightMatrix_X[j] = RightMatrix_X[j]+(quad[quad_num].weight * quad[quad_num].dummy.x);
-            RightMatrix_Y[j] = RightMatrix_Y[j]+(quad[quad_num].weight * quad[quad_num].dummy.y);
-            cout<<"rightmatrix steps"<<RightMatrix_X[j]<<"::"<<RightMatrix_Y[j]<<"::"<<quad_num<<endl;
-            j++;
-            quad[quad_num].blocknums.push_back(i+1); /// here we get the seg fault
+        for(int i =0; i<numOfBlocks; i++){
+            if(Blocks[i].getFixed()!= true){
+                int quad_num = PutBoxInQuads(Blocks[i], centroid);
+                Blocks[i].AddTotalWeight(quad[quad_num].weight);
+                RightMatrix_X[j] = RightMatrix_X[j]+(quad[quad_num].weight * quad[quad_num].dummy.x);
+                RightMatrix_Y[j] = RightMatrix_Y[j]+(quad[quad_num].weight * quad[quad_num].dummy.y);
+                quad[quad_num].blocknums.push_back(i+1); /// here we get the seg fault
             } 
-    }
-
+        }
 
     AllWeights.clear();
     for (int a =0; a<numOfBlocks;a++){
@@ -143,9 +143,9 @@ int main(int argc, const char * argv[]) {
     double* x_after = NULL;
     double* y_after = NULL;
     int dim_after = numOfFixed;
+    double** A_after = NULL;
     double* bx_after = new double[dim_after];
     double* by_after = new double[dim_after];
-    double** A_after = NULL;
     A_after = new double* [dim_after];
     for (int i =0; i < dim_after; i++){
         A_after[i] = new double[dim_after];
@@ -181,7 +181,21 @@ int main(int argc, const char * argv[]) {
         Y_after[h]=Blocks1[h].gety();
     }
     
+    /// trying to get simPL working.
+#ifdef Part4 
+    vector<block> Block1 = Blocks;
     
+    int interation =0;
+    while(){
+        int num_div = 10/(iteration+1);
+        for(int n = 0; n< numOfFixed; n++){
+            
+        
+        }
+    }
+    
+#endif   
+    // hopefully it will work.
     double HPWL_after = CalculateHPWL(&Nets, Blocks1, numNets);
     
     cout<<"hpwl before: "<<HPWL<<" hpwl after:"<<HPWL_after<<endl;
@@ -198,4 +212,7 @@ int main(int argc, const char * argv[]) {
     cout<<"Done"<<endl;
     
     return 0;
+    
+    
+    
 }
