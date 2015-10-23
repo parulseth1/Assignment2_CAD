@@ -15,7 +15,8 @@
 #include "APlacer.h"
 #include "graphics.h"
 #include "Drawing.h"
-#define FILENAME "/home/eski/Parul/Assignment2/cct2.txt"
+#include <string.h>
+//#define FILENAME "/home/eski/Parul/Assignment2/cct2.txt"
 
 using namespace::std;
 
@@ -26,17 +27,10 @@ int main(int argc, const char * argv[]) {
         cout << "Usage : ./AnalyticalPlacer <File name>" << endl;
         return 1;
     }
-    int caseDirection;
-    if (strcmp(argv[1], "-u") == 0) {
-        //unidirectional case
-        caseDirection = 1;
-    } else if (strcmp(argv[1], "-b") == 0) {
-        //bidirectional case
-        caseDirection = 2;
-    } else {
-        cout << "wrong argument" << endl;
-        return 1;
-    }
+    
+    char* FILENAME = new char[strlen(argv[1]) + 1];
+    strcpy(FILENAME, argv[1]);
+    cout<<FILENAME<<endl;
     
     
     vector<block> Blocks;
