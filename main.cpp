@@ -15,11 +15,30 @@
 #include "APlacer.h"
 #include "graphics.h"
 #include "Drawing.h"
-#define FILENAME "/home/parul/NetBeansProjects/AnalyticalPlacer/cct2.txt"
+#define FILENAME "/home/eski/Parul/Assignment2/cct2.txt"
 
 using namespace::std;
 
 int main(int argc, const char * argv[]) {
+    
+    
+     if (argc < 2) {
+        cout << "Usage : ./AnalyticalPlacer <File name>" << endl;
+        return 1;
+    }
+    int caseDirection;
+    if (strcmp(argv[1], "-u") == 0) {
+        //unidirectional case
+        caseDirection = 1;
+    } else if (strcmp(argv[1], "-b") == 0) {
+        //bidirectional case
+        caseDirection = 2;
+    } else {
+        cout << "wrong argument" << endl;
+        return 1;
+    }
+    
+    
     vector<block> Blocks;
     vector<block> Blocks1;
     Net* Nets = NULL;

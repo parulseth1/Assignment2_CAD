@@ -34,19 +34,21 @@ int LoadRatsNest(Net* _nets, int _netCnt) {
 int DrawOnScreen() {
     init_graphics("Analytical Placer", WHITE);
 
-    set_visible_world(0, 0, 1000, 1000);
+    set_visible_world(0, 0, 1200, 1200);
 
     event_loop(NULL, NULL, NULL, drawscreen);
 
     close_graphics();
+    cout<<"END";
     return 0;
 }
 
 void drawscreen() {
     //draw the main grid and the wire mesh - gridSize x gridSize grid i.e.
     //draw the main rect first
-    float blockDim = 1000 / (gridSize + 2);
-    float rectOffset = blockDim;
+    clearscreen();
+    float blockDim = 100;//1000 / (gridSize + 2);
+    float rectOffset = 100;
 
     setcolor(135, 206, 250); //blue
     fillrect(rectOffset, rectOffset, rectOffset + blockDim*gridSize, rectOffset + blockDim * gridSize);
@@ -58,10 +60,10 @@ void drawscreen() {
         drawline(rectOffset, rectOffset + blockDim*i, rectOffset + gridSize*blockDim, rectOffset + blockDim * i);
     }
 
-    //draw the blocks
+    //draw the blocks as points
     setcolor(184, 184, 184); //grey
     for (int i = 0; i < blockCnt; i++) {
-        fillrect(rectOffset + blockDim * (x[i]), rectOffset + blockDim * (y[i]), rectOffset + blockDim * (x[i] + 1), rectOffset + blockDim * (y[i] + 1));
+        drawline(rectOffset + blockDim * (x[i]), rectOffset + blockDim * (y[i]), rectOffset + blockDim * (x[i]), rectOffset + blockDim * (y[i]));
     }
 
     //draw the rats nest
@@ -76,7 +78,7 @@ void drawscreen() {
                     int y1 = y[(*blocks)[j]-1];
                     int x2 = x[(*blocks)[k]-1];
                     int y2 = y[(*blocks)[k]-1];
-                    drawline(rectOffset + blockDim*x1 + blockDim/2, rectOffset + blockDim*y1 + blockDim/2, rectOffset + blockDim*x2 + blockDim/2, rectOffset + blockDim*y2 + blockDim/2);
+                    drawline(rectOffset + blockDim*x1, rectOffset + blockDim*y1, rectOffset + blockDim*x2, rectOffset + blockDim*y2);
                 }
             }
         }
